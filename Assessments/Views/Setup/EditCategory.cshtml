@@ -1,0 +1,127 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupEditCategoryViewModel
+
+@{
+    ViewBag.Title = "EditCategory";
+}
+
+<h2>Edit Category - @Model.Name</h2>
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <div id="QuestionList">
+            @Html.Partial("_QuestionList", Model)
+        </div>
+    </div>
+    <div class="col-sm-8">
+        @using (Ajax.BeginForm(
+                "SaveQuestion",
+                new { id = Model.Question.ID, categoryID = ViewContext.RouteData.Values["id"] },
+                new AjaxOptions { UpdateTargetId = "QuestionList", OnSuccess = "AfterQuestionSave" },
+                new { id = "QuestionForm" })
+            )
+        {
+        <div class="panel panel-primary">
+            
+            <div class="panel-heading">
+                
+                <div class="row clearfix">
+                    <div class="col-sm-2">
+                        @Html.LabelFor(o => o.Question.Heading, new { @class = "" })
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.HiddenFor(o => o.Question.ID)
+                        @Html.TextBoxFor(o => o.Question.Heading, new { @class = "form-control clearfix" })
+                        <span class="hidden text-success questionSaved">Saved</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-xs-12">
+                        @Html.LabelFor(o => o.Question.Body)
+                        @Html.TextAreaFor(o => o.Question.Body, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-12">
+                        <input type="button" id="SaveQuestion" value="Save" class="btn btn-success btn-primary pull-right" />
+                    </div>
+                </div>
+                <div class="row">
+                    @for (int i = 0; i < Model.Levels.Count; i++)
+                    {
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                @Model.Levels[i].Name
+                            </div>
+                            <div class="panel-body">
+                                @foreach (var checkoffitem in Model.Levels[i].CheckoffItems)
+                                {
+                                    <div class="col-xs-12">
+                                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                                        @checkoffitem.Wording
+                                    </div>
+                                }
+                                <div id="NewItem-@Model.Levels[i].ID" class="form-group row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
+                                    <div class="col-xs-12">
+                                        @Html.TextAreaFor(o => o.Levels[i].CheckoffItem.Wording, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
+                                    <div class="col-xs-12">
+                                        <button type="button" class="btn btn-success pull-right addCheckoffItem" data-id="0" data-levelid="@Model.Levels[i].ID" data-wordingid="@Html.IdFor(o => o.Levels[i].CheckoffItem.Wording)">Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+        @Html.ActionLink("Add Next Question","EditCategory", new { id = Model.ID, qid = 0 }, new { @class = "btn btn-primary" + (Model.Question.ID == 0 ? " hidden hideForNew" : "") })
+    </div>
+</div>
+@using (Ajax.BeginForm(
+                    "SaveCheckoffItem",
+                    null,
+                    new AjaxOptions { OnSuccess = "AfterCheckoffItemSave", InsertionMode = InsertionMode.InsertBefore, UpdateTargetId = "NewItem-0" },
+                    new { id = "CheckoffItemForm" })
+                )
+{
+    @Html.HiddenFor(o => o.CheckoffItem.ID)
+    @Html.HiddenFor(o => o.CheckoffItem.QuestionID)
+    @Html.HiddenFor(o => o.CheckoffItem.LevelID)
+    @Html.HiddenFor(o => o.CheckoffItem.Wording)
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#SaveQuestion").on("click", function () {
+                $("#QuestionForm").submit();
+            });
+            $(".addCheckoffItem").on("click", function () {
+                var wording = $("#" + $(this).attr("data-wordingid")).val();
+                if (wording.length > 0) {
+                    $("#@Html.IdFor(o => o.CheckoffItem.ID)").val($(this).attr("data-id"));
+                    $("#@Html.IdFor(o => o.CheckoffItem.LevelID)").val($(this).attr("data-levelid"));
+                    $("#@Html.IdFor(o => o.CheckoffItem.Wording)").val(wording);
+                    $("#CheckoffItemForm").attr("data-ajax-update", "#NewItem-" + $(this).attr("data-levelid"));
+                    $("#CheckoffItemForm").submit();
+                    $("#" + $(this).attr("data-wordingid")).val("");
+                }
+            });
+        });
+        function AfterQuestionSave()
+        {
+            $(".hideForNew").removeClass("hidden");
+        }
+        function AfterCheckoffItemSave() {
+
+        }
+    </script>
+}

@@ -1,0 +1,49 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupCreateCategoriesViewModel
+
+@{
+    ViewBag.Title = "Add Assessment Categories";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Add Categories</h2>
+        </div>
+        <div class="col-xs-12">
+            <div class="well well-sm">
+                Enter up to twelve categories for the assessment.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @for (int i = 0; i < Model.Categories.Count; i++)
+        {
+            if(i % 3 == 0)
+            {
+                @Html.Raw("<div class='col-xs-12 col-lg-6'><div class='well well-sm'>")
+            }
+            <div class="col-xs-12">
+                <div class="form-group row">
+                    @Html.HiddenFor(o => o.Categories[i].Order)
+                    @Html.LabelFor(o => o.Categories[i].Name, string.Format("Category {0}", i + 1), new { @class = "col-xs-12 col-sm-6 col-md-3" })
+                    <div class="col-xs-12 col-sm-9 col-md-10">
+                        @Html.TextBoxFor(o => o.Categories[i].Name, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            if ((i + 1) % 3 == 0)
+            {
+                @Html.Raw("</div></div>")
+            }
+        }
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+
+            <input type="submit" value="Create Assessment" class="btn btn-success pull-right" />
+        </div>
+    </div>
+}

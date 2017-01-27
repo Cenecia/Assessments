@@ -1,0 +1,19 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.ActionLink("Create New", "CreateAssessment")
+@foreach(var item in Model.Assessments)
+{
+    <div class="row">
+        <a href="@Url.Action("EditAssessment", new { id = item.ID })">
+            <div class="col-xs-12">
+                @item.Name
+            </div>
+        </a>
+    </div>
+}

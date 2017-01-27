@@ -1,0 +1,14 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupCreateCategoriesViewModel
+
+@{
+    ViewBag.Title = "EditAssessment";
+}
+
+<h2>@Model.AssessmentName</h2>
+
+<ul class="list-group">
+    @foreach (var item in Model.Categories)
+    {
+        <li class="list-group-item">@item.Name</li>
+    }
+</ul>

@@ -1,0 +1,11 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupEditCategoryViewModel
+<div class="list-group">
+    @foreach (var item in Model.Questions)
+    {
+
+        <a href="@Url.Action("EditCategory", new { id = item.CategoryID, qid = item.ID })" class="list-group-item @(item.ID == Model.Question.ID ? "active" : "")">
+            <h4 class="list-group-item-heading">@(item.ID == 0 ? "New Question" : item.Heading)</h4>
+            <p class="list-group-item-text">@(item.ID == 0 ? "" : item.Body)</p>
+        </a>
+    }
+</div>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="87e01e49d6c7425798bf1063db36d09b" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.AspNetRole" Width="1.5" PointX="5.75" PointY="13" />
+        <EntityTypeShape EntityType="Model.AspNetUserClaim" Width="1.5" PointX="10.25" PointY="10.125" />
+        <EntityTypeShape EntityType="Model.AspNetUserLogin" Width="1.5" PointX="10.25" PointY="15.625" />
+        <EntityTypeShape EntityType="Model.AspNetUser" Width="1.5" PointX="8" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.AssessmentCategory" Width="1.5" PointX="5.25" PointY="3.5" />
+        <EntityTypeShape EntityType="Model.AssessmentCheckoffItem" Width="1.5" PointX="9.75" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.AssessmentCollection" Width="1.5" PointX="3" PointY="2.875" />
+        <EntityTypeShape EntityType="Model.AssessmentLevel" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="Model.AssessmentQuestion" Width="1.5" PointX="7.5" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.Translation" Width="1.5" PointX="0.75" PointY="3.875" />
+        <EntityTypeShape EntityType="Model.UserDetail" Width="1.5" PointX="10.25" PointY="12.875" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.fk_UserDetailsAspNetUsers" />
+        <AssociationConnector Association="Model.fk_AssessmentCategoryAssessmentCollection" />
+        <AssociationConnector Association="Model.fk_AssessmentCategoryTranslationName" />
+        <AssociationConnector Association="Model.fk_AssessmentQuestionAssessmentCategory" />
+        <AssociationConnector Association="Model.fk_AssessmentCheckoffItemAssessmentQuestion" />
+        <AssociationConnector Association="Model.fk_AssessmentCheckoffItemTranslationWording" />
+        <AssociationConnector Association="Model.fk_AssessmentQuestionAssessmentLevel" />
+        <AssociationConnector Association="Model.fk_AssessmentCollectionTranslationTitle" />
+        <AssociationConnector Association="Model.fk_AssessmentLevelTranslationName" />
+        <AssociationConnector Association="Model.fk_AssessmentQuestionTranslationBody" />
+        <AssociationConnector Association="Model.fk_AssessmentQuestionTranslationHeading" />
+        <AssociationConnector Association="Model.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
