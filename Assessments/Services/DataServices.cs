@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Assessments.Models;
 using Assessments.ViewModels.SetupViewModels;
+using Assessments.ViewModels.AssessmentViewModels;
 
 namespace Assessments.Services
 {
@@ -11,6 +12,7 @@ namespace Assessments.Services
     {
         private Entities db = new Entities();
 
+#region Setup
         public int CreateAssessment(string name)
         {
             var newAssessment = new AssessmentCollection
@@ -247,6 +249,19 @@ namespace Assessments.Services
                     Heading = o.Translation.EN,
                     Body = o.Translation1.EN,
                     CategoryID = o.AssessmentCategoryID
+                }
+            ).ToList();
+        }
+#endregion
+
+        public List<AssessmentListItem> GetUserAssessments(string userid)
+        {
+            return db.AssessmentCollections.Select(o => 
+                new AssessmentListItem
+                {
+                    ID = o.ID,
+                    Title = o.Translation.EN,
+                    Started = o.UserAssessments.Any(x => x.UserDetail.UserId == userid)
                 }
             ).ToList();
         }

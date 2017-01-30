@@ -14,11 +14,19 @@ namespace Assessments.Models
     
     public partial class UserDetail
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserDetail()
+        {
+            this.UserAssessments = new HashSet<UserAssessment>();
+        }
+    
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserAssessment> UserAssessments { get; set; }
     }
 }

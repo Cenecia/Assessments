@@ -1,0 +1,16 @@
+﻿@model Assessments.ViewModels.AssessmentViewModels.AssessmentIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Available Assessments</h2>
+
+@foreach(var item in Model.AvailableAssessments)
+{
+    <div class="row">
+        <div class="col-xs-12">
+            @item.Title @(item.Started ? " - Started" : "")
+        </div>
+    </div>
+}

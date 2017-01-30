@@ -18,6 +18,7 @@ namespace Assessments.Models
         public AssessmentCollection()
         {
             this.AssessmentCategories = new HashSet<AssessmentCategory>();
+            this.UserAssessments = new HashSet<UserAssessment>();
         }
     
         public int ID { get; set; }
@@ -26,5 +27,7 @@ namespace Assessments.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AssessmentCategory> AssessmentCategories { get; set; }
         public virtual Translation Translation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserAssessment> UserAssessments { get; set; }
     }
 }

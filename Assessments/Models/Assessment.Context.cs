@@ -36,6 +36,10 @@ namespace Assessments.Models
         public virtual DbSet<AssessmentLevel> AssessmentLevels { get; set; }
         public virtual DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
         public virtual DbSet<Translation> Translations { get; set; }
+        public virtual DbSet<UserAssessment> UserAssessments { get; set; }
+        public virtual DbSet<UserAssessmentCategory> UserAssessmentCategories { get; set; }
+        public virtual DbSet<UserAssessmentCheckoffItem> UserAssessmentCheckoffItems { get; set; }
+        public virtual DbSet<UserAssessmentQuestion> UserAssessmentQuestions { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Assessments.Models;
+using Assessments.Services;
 
 namespace Assessments.Controllers
 {
@@ -17,7 +18,7 @@ namespace Assessments.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private Assessments.Services.UsersServices userServices;
+        private UsersServices usersServices = new UsersServices();
 
         public AccountController()
         {
@@ -157,7 +158,7 @@ namespace Assessments.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    userServices.CreateUserDetails(user.Id);
+                    usersServices.CreateUserDetails(user.Id);
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

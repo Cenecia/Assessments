@@ -45,7 +45,10 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-xs-12">
-                        <input type="button" id="SaveQuestion" value="Save" class="btn btn-success btn-primary pull-right" />
+                        <button type="button" id="SaveQuestion" value="Save" class="btn btn-success btn-primary pull-right">
+                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                            Save
+                        </button>
                     </div>
                 </div>
                 <div class="row">
@@ -57,21 +60,25 @@
                                 @Model.Levels[i].Name
                             </div>
                             <div class="panel-body">
+                                <div class="row">
                                 @foreach (var checkoffitem in Model.Levels[i].CheckoffItems)
                                 {
-                                    <div class="col-xs-12">
-                                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-                                        @checkoffitem.Wording
-                                    </div>
+                                    @Html.Partial("_CheckoffItem", checkoffitem)
                                 }
-                                <div id="NewItem-@Model.Levels[i].ID" class="form-group row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
+                                </div>
+                                <div id="NewItem-@Model.Levels[i].ID" class="row">
+                                </div>
+                                <div class="form-group row">
                                     <div class="col-xs-12">
                                         @Html.TextAreaFor(o => o.Levels[i].CheckoffItem.Wording, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="form-group row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
+                                <div class="row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
                                     <div class="col-xs-12">
-                                        <button type="button" class="btn btn-success pull-right addCheckoffItem" data-id="0" data-levelid="@Model.Levels[i].ID" data-wordingid="@Html.IdFor(o => o.Levels[i].CheckoffItem.Wording)">Add New</button>
+                                        <button type="button" class="btn btn-success addCheckoffItem" data-id="0" data-levelid="@Model.Levels[i].ID" data-wordingid="@Html.IdFor(o => o.Levels[i].CheckoffItem.Wording)">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            Add New
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +95,7 @@
 @using (Ajax.BeginForm(
                     "SaveCheckoffItem",
                     null,
-                    new AjaxOptions { OnSuccess = "AfterCheckoffItemSave", InsertionMode = InsertionMode.InsertBefore, UpdateTargetId = "NewItem-0" },
+                    new AjaxOptions { OnSuccess = "AfterCheckoffItemSave", InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "NewItem-0" },
                     new { id = "CheckoffItemForm" })
                 )
 {
@@ -121,7 +128,7 @@
             $(".hideForNew").removeClass("hidden");
         }
         function AfterCheckoffItemSave() {
-
+            $(".new-c-item").addClass("row");
         }
     </script>
 }

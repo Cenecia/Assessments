@@ -18,6 +18,7 @@ namespace Assessments.Models
         public AssessmentQuestion()
         {
             this.AssessmentCheckoffItems = new HashSet<AssessmentCheckoffItem>();
+            this.UserAssessmentQuestions = new HashSet<UserAssessmentQuestion>();
         }
     
         public int ID { get; set; }
@@ -30,5 +31,7 @@ namespace Assessments.Models
         public virtual ICollection<AssessmentCheckoffItem> AssessmentCheckoffItems { get; set; }
         public virtual Translation Translation { get; set; }
         public virtual Translation Translation1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserAssessmentQuestion> UserAssessmentQuestions { get; set; }
     }
 }
