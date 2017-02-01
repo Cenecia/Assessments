@@ -40,6 +40,13 @@ namespace Assessments.Controllers
             usersServices.DemoteUser(ViewModel.User.ID);
         }
 
+        [HttpPost]
+        public ActionResult EditUserDetails(UserManagementViewModel ViewModel)
+        {
+            usersServices.EditUserDetails(ViewModel.User.ID, ViewModel.User.FirstName, ViewModel.User.LastName);
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

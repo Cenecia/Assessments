@@ -31,10 +31,18 @@ namespace Assessments.Services
             ).ToList();
         }
 
-        public void CreateUserDetails(string userid)
+        public void CreateUserDetails(string userid, string firstName, string lastName)
         {
-            db.UserDetails.Add(new UserDetail { UserId = userid });
+            db.UserDetails.Add(new UserDetail { UserId = userid, FirstName = firstName, LastName = lastName });
 
+            db.SaveChanges();
+        }
+
+        public void EditUserDetails(int id, string firstname, string lastname)
+        {
+            var userDetail = db.UserDetails.Single(o => o.ID == id);
+            userDetail.FirstName = firstname;
+            userDetail.LastName = lastname;
             db.SaveChanges();
         }
 
