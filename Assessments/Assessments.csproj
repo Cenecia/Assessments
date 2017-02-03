@@ -310,6 +310,7 @@
     <Content Include="Models\Assessment.edmx.diagram">
       <DependentUpon>Assessment.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Cenecia - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
