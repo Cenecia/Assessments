@@ -364,10 +364,12 @@
     <Content Include="Views\Setup\_AssessmentCategoryItem.cshtml" />
     <Content Include="Views\Setup\EditAssessment.cshtml" />
     <Content Include="Views\Setup\EditCategory.cshtml" />
-    <Content Include="Views\Shared\_QuestionList.cshtml" />
+    <Content Include="Views\Setup\_QuestionList.cshtml" />
     <Content Include="Views\Setup\_CheckoffItem.cshtml" />
     <Content Include="Views\ManageUsers\Index.cshtml" />
     <Content Include="Views\Assessment\Index.cshtml" />
+    <Content Include="Views\Assessment\ConductAssessment.cshtml" />
+    <Content Include="Views\Assessment\_QuestionList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

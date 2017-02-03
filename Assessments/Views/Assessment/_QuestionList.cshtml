@@ -1,0 +1,11 @@
+﻿@model Assessments.ViewModels.AssessmentViewModels.ConductAssessmentViewModel
+<div class="list-group">
+    @foreach (var item in Model.Questions)
+    {
+
+        <a href="@Url.Action("ConductAssessment", new { id = item.ID })" class="list-group-item @(item.ID == Model.Question.ID ? "active" : "")">
+            <h4 class="list-group-item-heading">@item.QuestionHeading</h4>
+            <p class="list-group-item-text">@item.QuestionBody</p>
+        </a>
+    }
+</div>

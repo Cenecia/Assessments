@@ -10,7 +10,17 @@
 {
     <div class="row">
         <div class="col-xs-12">
-            @item.Title @(item.Started ? " - Started" : "")
+            <div class="well well-sm">
+                <h3>@item.Title @(item.Started ? " - Started" : "")</h3>
+                <div class="row">
+                @foreach(var category in item.Categories)
+                {
+                    <div class="col-xs-6">
+                        @Html.ActionLink(category.Name, "ConductAssessment", new { id = category.ID }, new { @class = "btn btn-primary" })
+                    </div>
+                }
+                </div>
+            </div>
         </div>
     </div>
 }

@@ -23,5 +23,12 @@ namespace Assessments.Controllers
             };
             return View(ViewModel);
         }
+
+        [HttpGet]
+        public ActionResult ConductAssessment(int id)
+        {
+            var ViewModel = assessmentServices.ConductAssessment(UserId(), id);
+            return View(ViewModel);
+        }
     }
 }

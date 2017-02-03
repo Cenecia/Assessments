@@ -9,6 +9,6 @@
 <ul class="list-group">
     @foreach (var item in Model.Categories)
     {
-        <li class="list-group-item">@item.Name</li>
+        <a href="@Url.Action("EditCategory", new { id = item.ID })" class="list-group-item">@item.Name</a>
     }
 </ul>

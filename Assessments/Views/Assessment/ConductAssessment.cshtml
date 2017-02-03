@@ -1,0 +1,62 @@
+﻿@model Assessments.ViewModels.AssessmentViewModels.ConductAssessmentViewModel
+
+@{
+    ViewBag.Title = "EditCategory";
+}
+
+<h2>Category @Model.CategoryID</h2>
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <div id="QuestionList">
+            @Html.Partial("_QuestionList", Model)
+        </div>
+    </div>
+    <div class="col-sm-8">
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+
+                    <div class="row clearfix">
+                        <div class="col-xs-12">
+                            @Model.Question.QuestionHeading
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-xs-12">
+                            @Model.Question.QuestionBody
+                        </div>
+                    </div>
+                    <div class="row">
+                        @for (int l = 0; l < Model.Question.Levels.Count; l++)
+                        {
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        @Model.Question.Levels[l].Name
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            @for(var i = 0; i < Model.Question.Levels[l].CheckoffItems.Count; i++)
+                                            {
+                                                <div class="col-xs-12">
+                                                    <label>
+                                                        @Html.CheckBoxFor(o => o.Question.Levels[l].CheckoffItems[i].Checked)
+                                                        @Model.Question.Levels[l].CheckoffItems[i].Wording
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        @Html.ActionLink("Next Question", "ConductAssessment", new { id = Model.Question.ID }, new { @class = "btn btn-primary" + (Model.Question.ID == 0 ? " hidden hideForNew" : "") })
+    </div>
+</div>

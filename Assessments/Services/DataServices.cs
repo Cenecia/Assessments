@@ -72,7 +72,7 @@ namespace Assessments.Services
 
         public int CreateAssessmentCheckoffItem(string wording, int questionId, int levelId, int order)
         {
-            var checkoffItem = new AssessmentCheckoffItem
+            var checkoffItem = new Assessments.Models.AssessmentCheckoffItem
             {
                 Translation = new Translation { EN = wording },
                 AssessmentQuestionID = questionId,
@@ -229,7 +229,7 @@ namespace Assessments.Services
 
         public int AddCheckoffItem(int id, int levelID, string wording)
         {
-            var checkoffItem = new AssessmentCheckoffItem
+            var checkoffItem = new Assessments.Models.AssessmentCheckoffItem
             {
                 AssessmentQuestionID = id,
                 AssessmentLevelID = levelID,
@@ -261,9 +261,72 @@ namespace Assessments.Services
                 {
                     ID = o.ID,
                     Title = o.Translation.EN,
-                    Started = o.UserAssessments.Any(x => x.UserDetail.UserId == userid)
+                    Started = o.UserAssessments.Any(x => x.UserDetail.UserId == userid),
+                    Categories = o.AssessmentCategories.Select(x => 
+                        new AnswerCategoryListItem {
+                            ID = x.ID,
+                            Name = x.Translation.EN,
+                            Started = x.UserAssessmentCategories.Any(y => y.UserAssessment.UserDetail.UserId == userid)
+                        }).ToList()
                 }
             ).ToList();
+        }
+
+        public ConductAssessmentViewModel ConductAssessment(string userid, int id)
+        {
+            var ViewModel = new ConductAssessmentViewModel();
+            var question = db.AssessmentQuestions.FirstOrDefault(o =>
+                o.AssessmentCategoryID == id
+                && !o.UserAssessmentQuestions.Any(x =>
+                    x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid)
+            );
+            if (question == null)
+                question = db.AssessmentQuestions.First(o => o.AssessmentCategoryID == id);
+
+            var levels = db.AssessmentLevels.ToList();
+            var Question = db.AssessmentQuestions.Single(o => o.ID == question.ID);
+            var AssessmentQuestion = db.AssessmentQuestions.Where(o => o.ID == question.ID).Single();
+            ViewModel.Question = 
+                new AnswerQuestonViewModel
+                {
+                    ID = AssessmentQuestion.ID,
+                    QuestionHeading = AssessmentQuestion.Translation.EN,
+                    QuestionBody = AssessmentQuestion.Translation1.EN,
+                    Levels = levels.Select(o => new AnswerLevelListItem {
+                        ID = o.ID,
+                        Name  = o.Translation.EN,
+                        CheckoffItems = AssessmentQuestion.AssessmentCheckoffItems.Where(x => x.AssessmentLevelID == o.ID).Select(x =>
+                        new AnswerCheckoffItem {
+                            ID = x.ID,
+                            LevelID = o.ID,
+                            Wording = x.Translation.EN,
+                            Checked = x.UserAssessmentCheckoffItems.Any(y => y.AssessmentCheckoffItemID == x.ID && y.Checked)
+                        }).ToList()
+                    }).ToList()
+                };
+
+            ViewModel.Questions = 
+                AssessmentQuestion.AssessmentCategory.AssessmentQuestions.Select(o =>
+                    new AnswerQuestonViewModel
+                    {
+                        ID = o.ID,
+                        QuestionHeading = o.Translation.EN,
+                        QuestionBody = o.Translation1.EN
+                    }
+                ).ToList();
+
+            var Answer = 
+                AssessmentQuestion.UserAssessmentQuestions.SingleOrDefault(o => 
+                    o.AssessmentQuestionID == question.ID 
+                    && o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid
+                );
+
+            if(Answer != null)
+            {
+                ViewModel.Question.Comment = Answer.Comments;
+            }
+
+            return ViewModel;
         }
     }
 }
