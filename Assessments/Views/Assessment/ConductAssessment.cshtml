@@ -31,32 +31,48 @@
                         </div>
                     </div>
                     <div class="row">
-                        @for (int l = 0; l < Model.Question.Levels.Count; l++)
+                        @using (Html.BeginForm("ConductAssessment", "Assessment", new  { id = ViewContext.RouteData.Values["id"] }, FormMethod.Post, new { id = "AnswerForm" }))
                         {
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        @Model.Question.Levels[l].Name
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            @for(var i = 0; i < Model.Question.Levels[l].CheckoffItems.Count; i++)
-                                            {
-                                                <div class="col-xs-12">
-                                                    <label>
-                                                        @Html.CheckBoxFor(o => o.Question.Levels[l].CheckoffItems[i].Checked)
-                                                        @Model.Question.Levels[l].CheckoffItems[i].Wording
-                                                    </label>
-                                                </div>
-                                            }
+                            @Html.HiddenFor(o => o.CategoryID)
+                            @Html.HiddenFor(o => o.Question.ID)
+                            for (int l = 0; l < Model.Question.Levels.Count; l++)
+                            {
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            @Model.Question.Levels[l].Name
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                @for (var i = 0; i < Model.Question.Levels[l].CheckoffItems.Count; i++)
+                                                {
+                                                    <div class="col-xs-12">
+                                                        @Html.HiddenFor(o => o.Question.Levels[l].CheckoffItems[i].ID)
+                                                        <label>
+                                                            @Html.CheckBoxFor(o => o.Question.Levels[l].CheckoffItems[i].Checked)
+                                                            @Model.Question.Levels[l].CheckoffItems[i].Wording
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>
             </div>
-        @Html.ActionLink("Next Question", "ConductAssessment", new { id = Model.Question.ID }, new { @class = "btn btn-primary" + (Model.Question.ID == 0 ? " hidden hideForNew" : "") })
+        <button class="btn btn-primary" id="SaveAnswer" >Next Question</button>
     </div>
 </div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#SaveAnswer").on("click", function () {
+                $("#AnswerForm").submit();
+            });
+        });
+    </script>
+}

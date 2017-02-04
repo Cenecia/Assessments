@@ -25,10 +25,17 @@ namespace Assessments.Controllers
         }
 
         [HttpGet]
-        public ActionResult ConductAssessment(int id)
+        public ActionResult ConductAssessment(int id, int? qid = null)
         {
-            var ViewModel = assessmentServices.ConductAssessment(UserId(), id);
+            var ViewModel = assessmentServices.ConductAssessment(UserId(), id, qid);
             return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ConductAssessment(int id, ConductAssessmentViewModel ViewModel)
+        {
+            var nextQuestionID = assessmentServices.SaveAnswer(UserId(), ViewModel);
+            return RedirectToAction("ConductAssessment", new { id = ViewModel.CategoryID, qid = nextQuestionID });
         }
     }
 }

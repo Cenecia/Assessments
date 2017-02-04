@@ -272,20 +272,25 @@ namespace Assessments.Services
             ).ToList();
         }
 
-        public ConductAssessmentViewModel ConductAssessment(string userid, int id)
+        public ConductAssessmentViewModel ConductAssessment(string userid, int id, int? questionID)
         {
-            var ViewModel = new ConductAssessmentViewModel();
-            var question = db.AssessmentQuestions.FirstOrDefault(o =>
+            var ViewModel = new ConductAssessmentViewModel
+            {
+                CategoryID = id
+            };
+            
+            //next unanswered question if any
+            var nextQuestion = db.AssessmentQuestions.FirstOrDefault(o =>
                 o.AssessmentCategoryID == id
                 && !o.UserAssessmentQuestions.Any(x =>
                     x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid)
             );
-            if (question == null)
-                question = db.AssessmentQuestions.First(o => o.AssessmentCategoryID == id);
+            if (nextQuestion == null)
+                nextQuestion = db.AssessmentQuestions.First(o => o.AssessmentCategoryID == id);
 
             var levels = db.AssessmentLevels.ToList();
-            var Question = db.AssessmentQuestions.Single(o => o.ID == question.ID);
-            var AssessmentQuestion = db.AssessmentQuestions.Where(o => o.ID == question.ID).Single();
+            var Question = questionID == null ? nextQuestion : db.AssessmentQuestions.Single(o => o.ID == questionID);
+            var AssessmentQuestion = db.AssessmentQuestions.Where(o => o.ID == Question.ID).Single();
             ViewModel.Question = 
                 new AnswerQuestonViewModel
                 {
@@ -313,11 +318,11 @@ namespace Assessments.Services
                         QuestionHeading = o.Translation.EN,
                         QuestionBody = o.Translation1.EN
                     }
-                ).ToList();
+                ).OrderBy(o => o.ID).ToList();
 
             var Answer = 
                 AssessmentQuestion.UserAssessmentQuestions.SingleOrDefault(o => 
-                    o.AssessmentQuestionID == question.ID 
+                    o.AssessmentQuestionID == Question.ID 
                     && o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid
                 );
 
@@ -327,6 +332,80 @@ namespace Assessments.Services
             }
 
             return ViewModel;
+        }
+
+        public int SaveAnswer(string userid, ConductAssessmentViewModel ViewModel)
+        {
+            var answer = db.UserAssessmentQuestions.SingleOrDefault(o => o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid 
+                                                                         && o.AssessmentQuestionID == ViewModel.Question.ID);
+            if(answer != null)
+            {
+                var checkoffItems = answer.UserAssessmentCheckoffItems.ToList();
+                foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
+                {
+                    if(checkoffItems.Any(x => x.AssessmentCheckoffItemID == item.ID))
+                    {
+                        if (item.Checked)
+                        {
+                            checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID).Checked = true;
+                        }
+                        else
+                        {
+                            checkoffItems.Remove(checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID));
+                        }
+                    }
+                    else if(item.Checked)
+                    {
+                        checkoffItems.Add(new UserAssessmentCheckoffItem { AssessmentCheckoffItemID = item.ID, UserAssessmentQuestionID = answer.ID });
+                    }
+
+                }
+                db.SaveChanges();
+            }
+            else
+            {
+                var checkoffitemid = ViewModel.Question.Levels.SelectMany(y => y.CheckoffItems).First().ID;
+                var question = 
+                    db.AssessmentQuestions.Single(o => o.AssessmentCheckoffItems.Any(x => x.ID == checkoffitemid));
+                answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID, UserAssessmentCategoryID = ViewModel.CategoryID };
+                answer.UserAssessmentCheckoffItems = new List<UserAssessmentCheckoffItem>();
+                foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
+                {
+                    if(item.Checked)
+                    {
+                        answer.UserAssessmentCheckoffItems.Add(new UserAssessmentCheckoffItem
+                        {
+                            AssessmentCheckoffItemID = item.ID,
+                            Checked = true
+                        });
+                    }
+                }
+                if(!question.AssessmentCategory.UserAssessmentCategories.Any(o => o.UserAssessment.UserDetail.UserId == userid))
+                {
+                    var AnswerAssessment = new UserAssessment();
+                    var AnswerCategory = new UserAssessmentCategory
+                    {
+                        UserAssessmentQuestions = new List<UserAssessmentQuestion>(),
+                        AssessmentCategoryID = ViewModel.CategoryID
+                    };
+                    AnswerCategory.UserAssessmentQuestions.Add(answer);
+                    if (!question.AssessmentCategory.AssessmentCollection.UserAssessments.Any(o => o.UserDetail.UserId == userid))
+                    {
+                        AnswerAssessment.UserDetailID = db.UserDetails.Single(o => o.UserId == userid).ID;
+                        AnswerAssessment.AssessmentID = question.AssessmentCategory.AssessmentCollectionID;
+                        AnswerAssessment.UserAssessmentCategories = new List<UserAssessmentCategory>();
+                        AnswerAssessment.UserAssessmentCategories.Add(AnswerCategory);
+                        db.UserAssessments.Add(AnswerAssessment);
+                    }
+                    else
+                    {
+                        AnswerAssessment = db.UserAssessments.Single(o => o.UserDetail.UserId == userid && o.UserAssessmentCategories.Any(x => x.AssessmentCategoryID == ViewModel.CategoryID));
+                        AnswerAssessment.UserAssessmentCategories.Add(AnswerCategory);
+                    }
+                }
+                db.SaveChanges();
+            }
+            return answer.AssessmentQuestionID;
         }
     }
 }
