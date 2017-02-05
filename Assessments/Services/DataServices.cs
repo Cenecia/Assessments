@@ -337,6 +337,16 @@ namespace Assessments.Services
             return ViewModel;
         }
 
+        public int GetNextQuestionId(int id)
+        {
+            var question = db.AssessmentQuestions.Single(o => o.ID == id);
+            if(question.AssessmentCategory.AssessmentQuestions.Any(o => o.QuestionOrder == question.QuestionOrder + 1))
+            {
+                return question.AssessmentCategory.AssessmentQuestions.Single(o => o.QuestionOrder == question.QuestionOrder + 1).ID;
+            }
+            return question.AssessmentCategory.AssessmentQuestions.OrderBy(o => o.QuestionOrder).First().ID;
+        }
+
         public int SaveAnswer(string userid, ConductAssessmentViewModel ViewModel)
         {
             var answer = db.UserAssessmentQuestions.SingleOrDefault(o => o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid 
@@ -350,16 +360,16 @@ namespace Assessments.Services
                     {
                         if (item.Checked)
                         {
-                            checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID).Checked = true;
+                            db.UserAssessmentCheckoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID).Checked = true;
                         }
                         else
                         {
-                            checkoffItems.Remove(checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID));
+                            db.UserAssessmentCheckoffItems.Remove(checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID));
                         }
                     }
                     else if(item.Checked)
                     {
-                        checkoffItems.Add(new UserAssessmentCheckoffItem { AssessmentCheckoffItemID = item.ID, UserAssessmentQuestionID = answer.ID });
+                        db.UserAssessmentCheckoffItems.Add(new UserAssessmentCheckoffItem { AssessmentCheckoffItemID = item.ID, UserAssessmentQuestionID = answer.ID, Checked = true });
                     }
 
                 }
@@ -370,7 +380,7 @@ namespace Assessments.Services
                 var checkoffitemid = ViewModel.Question.Levels.SelectMany(y => y.CheckoffItems).First().ID;
                 var question = 
                     db.AssessmentQuestions.Single(o => o.AssessmentCheckoffItems.Any(x => x.ID == checkoffitemid));
-                answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID, UserAssessmentCategoryID = ViewModel.CategoryID };
+                answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID };
                 answer.UserAssessmentCheckoffItems = new List<UserAssessmentCheckoffItem>();
                 foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
                 {
@@ -391,6 +401,7 @@ namespace Assessments.Services
                         UserAssessmentQuestions = new List<UserAssessmentQuestion>(),
                         AssessmentCategoryID = ViewModel.CategoryID
                     };
+                    answer.UserAssessmentCategoryID = AnswerCategory.ID;
                     AnswerCategory.UserAssessmentQuestions.Add(answer);
                     if (!question.AssessmentCategory.AssessmentCollection.UserAssessments.Any(o => o.UserDetail.UserId == userid))
                     {
@@ -406,9 +417,16 @@ namespace Assessments.Services
                         AnswerAssessment.UserAssessmentCategories.Add(AnswerCategory);
                     }
                 }
+                else
+                {
+                    answer.UserAssessmentCategoryID = question.AssessmentCategory.UserAssessmentCategories.Single(o => o.UserAssessment.UserDetail.UserId == userid).ID;
+                    db.UserAssessmentQuestions.Add(answer);
+                }
+
                 db.SaveChanges();
             }
-            return answer.AssessmentQuestionID;
+
+            return GetNextQuestionId(answer.AssessmentQuestionID);
         }
     }
 }
