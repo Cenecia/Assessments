@@ -31,6 +31,7 @@
                     </div>
                     <div class="col-sm-10">
                         @Html.HiddenFor(o => o.Question.ID)
+                        
                         @Html.TextBoxFor(o => o.Question.Heading, new { @class = "form-control clearfix" })
                         <span class="hidden text-success questionSaved">Saved</span>
                     </div>
@@ -100,7 +101,7 @@
                 )
 {
     @Html.HiddenFor(o => o.CheckoffItem.ID)
-    @Html.HiddenFor(o => o.CheckoffItem.QuestionID)
+    @Html.HiddenFor(o => o.CheckoffItem.QuestionID, new { @class = "ajaxqid" })
     @Html.HiddenFor(o => o.CheckoffItem.LevelID)
     @Html.HiddenFor(o => o.CheckoffItem.Wording)
 }
@@ -117,6 +118,7 @@
                     $("#@Html.IdFor(o => o.CheckoffItem.ID)").val($(this).attr("data-id"));
                     $("#@Html.IdFor(o => o.CheckoffItem.LevelID)").val($(this).attr("data-levelid"));
                     $("#@Html.IdFor(o => o.CheckoffItem.Wording)").val(wording);
+                    $(".ajaxqid").val($(".setupQuestionMenuItem.active").attr("data-qid"));
                     $("#CheckoffItemForm").attr("data-ajax-update", "#NewItem-" + $(this).attr("data-levelid"));
                     $("#CheckoffItemForm").submit();
                     $("#" + $(this).attr("data-wordingid")).val("");

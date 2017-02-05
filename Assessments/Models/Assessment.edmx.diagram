@@ -11,15 +11,15 @@
         <EntityTypeShape EntityType="Model.AspNetUserLogin" Width="1.5" PointX="3" PointY="17.5" />
         <EntityTypeShape EntityType="Model.AspNetUser" Width="1.5" PointX="0.75" PointY="3" />
         <EntityTypeShape EntityType="Model.AssessmentCategory" Width="1.5" PointX="5.25" PointY="11.625" />
-        <EntityTypeShape EntityType="Model.AssessmentCheckoffItem" Width="1.5" PointX="9.75" PointY="8.125" />
+        <EntityTypeShape EntityType="Model.AssessmentCheckoffItem" Width="1.5" PointX="9.75" PointY="11.25" />
         <EntityTypeShape EntityType="Model.AssessmentCollection" Width="1.5" PointX="3" PointY="8" />
         <EntityTypeShape EntityType="Model.AssessmentLevel" Width="1.5" PointX="3" PointY="10.75" />
-        <EntityTypeShape EntityType="Model.AssessmentQuestion" Width="1.5" PointX="7.5" PointY="13.125" />
+        <EntityTypeShape EntityType="Model.AssessmentQuestion" Width="1.5" PointX="7.5" PointY="13" />
         <EntityTypeShape EntityType="Model.Translation" Width="1.5" PointX="0.75" PointY="9.125" />
         <EntityTypeShape EntityType="Model.UserAssessment" Width="1.5" PointX="5.25" PointY="7.875" />
         <EntityTypeShape EntityType="Model.UserAssessmentCategory" Width="1.5" PointX="7.5" PointY="9.875" />
-        <EntityTypeShape EntityType="Model.UserAssessmentCheckoffItem" Width="1.5" PointX="12" PointY="10" />
-        <EntityTypeShape EntityType="Model.UserAssessmentQuestion" Width="1.5" PointX="9.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.UserAssessmentCheckoffItem" Width="1.5" PointX="12" PointY="13.125" />
+        <EntityTypeShape EntityType="Model.UserAssessmentQuestion" Width="1.5" PointX="9.75" PointY="14.875" />
         <EntityTypeShape EntityType="Model.UserDetail" Width="1.5" PointX="3" PointY="3.875" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />

@@ -60,6 +60,7 @@ namespace Assessments.ViewModels.SetupViewModels
         public string Body { get; set; }
         public List<SetupAsessmentCheckoffListItem> CheckoffItems { get; set; }
         public int CategoryID { get; set; }
+        public int QuestionOrder { get; set; }
         
     }
 

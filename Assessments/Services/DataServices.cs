@@ -180,7 +180,8 @@ namespace Assessments.Services
                         ID = o.ID,
                         Heading = o.Translation.EN,
                         Body = o.Translation1.EN,
-                        CategoryID = o.AssessmentCategoryID
+                        CategoryID = o.AssessmentCategoryID,
+                        QuestionOrder = o.QuestionOrder
                     }
                     ).ToList(),
                 Question = questionID == 0 
@@ -208,11 +209,13 @@ namespace Assessments.Services
 
         public int AddQuestion(int id, string heading, string body)
         {
+            var prevQuestion = db.AssessmentQuestions.Where(o => o.AssessmentCategoryID == id).OrderByDescending(o => o.QuestionOrder).FirstOrDefault();
             var question = new AssessmentQuestion
             {
                 AssessmentCategoryID = id,
                 Translation = new Translation { EN = heading },
-                Translation1 = new Translation { EN = body }
+                Translation1 = new Translation { EN = body },
+                QuestionOrder = prevQuestion != null ? prevQuestion.QuestionOrder + 1 : 1
             };
             db.AssessmentQuestions.Add(question);
             db.SaveChanges();

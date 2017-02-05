@@ -107,6 +107,8 @@
           <Property Name="HeadingTranslationID" Type="int" Nullable="false" />
           <Property Name="AssessmentCategoryID" Type="int" Nullable="false" />
           <Property Name="BodyTranslationID" Type="int" />
+          <Property Name="QuestionOrder" Type="int" Nullable="false" />
+          <Property Name="QuestionCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Translation">
           <Key>
@@ -777,6 +779,8 @@
           <Property Name="HeadingTranslationID" Type="Int32" Nullable="false" />
           <Property Name="AssessmentCategoryID" Type="Int32" Nullable="false" />
           <Property Name="BodyTranslationID" Type="Int32" />
+          <Property Name="QuestionOrder" Type="Int32" Nullable="false" />
+          <Property Name="QuestionCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AssessmentCategory" Relationship="Model.fk_AssessmentQuestionAssessmentCategory" FromRole="AssessmentQuestion" ToRole="AssessmentCategory" />
           <NavigationProperty Name="AssessmentCheckoffItems" Relationship="Model.fk_AssessmentCheckoffItemAssessmentQuestion" FromRole="AssessmentQuestion" ToRole="AssessmentCheckoffItem" />
           <NavigationProperty Name="Translation" Relationship="Model.fk_AssessmentQuestionTranslationBody" FromRole="AssessmentQuestion" ToRole="Translation" />
@@ -1213,6 +1217,8 @@
           <EntitySetMapping Name="AssessmentQuestions">
             <EntityTypeMapping TypeName="Model.AssessmentQuestion">
               <MappingFragment StoreEntitySet="AssessmentQuestion">
+                <ScalarProperty Name="QuestionCode" ColumnName="QuestionCode" />
+                <ScalarProperty Name="QuestionOrder" ColumnName="QuestionOrder" />
                 <ScalarProperty Name="BodyTranslationID" ColumnName="BodyTranslationID" />
                 <ScalarProperty Name="AssessmentCategoryID" ColumnName="AssessmentCategoryID" />
                 <ScalarProperty Name="HeadingTranslationID" ColumnName="HeadingTranslationID" />

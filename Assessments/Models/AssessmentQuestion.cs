@@ -25,6 +25,8 @@ namespace Assessments.Models
         public int HeadingTranslationID { get; set; }
         public int AssessmentCategoryID { get; set; }
         public Nullable<int> BodyTranslationID { get; set; }
+        public int QuestionOrder { get; set; }
+        public string QuestionCode { get; set; }
     
         public virtual AssessmentCategory AssessmentCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
