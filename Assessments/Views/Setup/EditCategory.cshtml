@@ -56,7 +56,7 @@
                     @for (int i = 0; i < Model.Levels.Count; i++)
                     {
                     <div class="col-xs-12 col-sm-3">
-                        <div class="panel panel-default">
+                        <div class="panel @Model.GetLevelClass(Model.Levels[i].Order)">
                             <div class="panel-heading">
                                 @Model.Levels[i].Name
                             </div>

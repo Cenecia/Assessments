@@ -303,6 +303,7 @@ namespace Assessments.Services
                     Levels = levels.Select(o => new AnswerLevelListItem {
                         ID = o.ID,
                         Name  = o.Translation.EN,
+                        LevelOrder = o.LevelOrder,
                         CheckoffItems = AssessmentQuestion.AssessmentCheckoffItems.Where(x => x.AssessmentLevelID == o.ID).Select(x =>
                         new AnswerCheckoffItem {
                             ID = x.ID,

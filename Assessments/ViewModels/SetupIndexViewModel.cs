@@ -79,6 +79,22 @@ namespace Assessments.ViewModels.SetupViewModels
         public SetupAsessmentCheckoffListItem CheckoffItem { get; set; }
         public List<SetupQuestionListItem> Questions { get; set; }
         public List<SetupAssessmentLevelItem> Levels { get; set; }
+        public string GetLevelClass(int order)
+        {
+            switch (order)
+            {
+                case 1:
+                    return "panel-danger";
+                case 2:
+                    return "panel-warning";
+                case 3:
+                    return "panel-primary";
+                case 4:
+                    return "panel-success";
+                default:
+                    return "panel-default";
+            }
+        }
     }
 
     public class SetupAssessmentLevelItem

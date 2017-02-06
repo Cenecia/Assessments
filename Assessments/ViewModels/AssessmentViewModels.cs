@@ -23,6 +23,22 @@ namespace Assessments.ViewModels.AssessmentViewModels
         public int CategoryID { get; set; }
         public List<AnswerQuestonViewModel> Questions { get; set; }
         public AnswerQuestonViewModel Question { get; set; }
+        public string GetLevelClass(int order)
+        {
+            switch (order)
+            {
+                case 1:
+                    return "panel-danger";
+                case 2:
+                    return "panel-warning";
+                case 3:
+                    return "panel-primary";
+                case 4:
+                    return "panel-success";
+                default:
+                    return "panel-default";
+            }
+        }
     }
 
     public class AnswerQuestonViewModel
@@ -53,6 +69,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public int LevelOrder { get; set; }
         public List<AnswerCheckoffItem> CheckoffItems { get; set; }
     }
 }

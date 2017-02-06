@@ -38,7 +38,7 @@
                             for (int l = 0; l < Model.Question.Levels.Count; l++)
                             {
                                 <div class="col-xs-12 col-sm-3">
-                                    <div class="panel panel-default">
+                                    <div class="panel @Model.GetLevelClass(Model.Question.Levels[l].LevelOrder)">
                                         <div class="panel-heading">
                                             @Model.Question.Levels[l].Name
                                         </div>
