@@ -6,9 +6,14 @@
 
 <h2>@Model.AssessmentName</h2>
 
-<ul class="list-group">
-    @foreach (var item in Model.Categories)
-    {
-        <a href="@Url.Action("EditCategory", new { id = item.ID })" class="list-group-item">@item.Name</a>
-    }
-</ul>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="btn-group btn-group-justified" role="group">
+            @foreach (var item in Model.Categories)
+            {
+                <a href="@Url.Action("EditCategory", new { id = item.ID })" class="btn btn-primary">@item.Name</a>
+            }
+        </div>
+    </div>
+</div>

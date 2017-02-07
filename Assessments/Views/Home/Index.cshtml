@@ -2,7 +2,34 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Assessments</h1>
-    <p class="lead">This is Assessments</p>
+@if (Request.IsAuthenticated)
+{
+<h3>Dashboard</h3>
+<div class="well">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-xs-12" style="margin-top:10px;">
+                    <a href="@Url.Action("Index", "Assessment")" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt"></span> Available Assessments</a>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="col-xs-12" style="margin-top:10px;">
+                        <a href="@Url.Action("Index", "ManageUsers")" class="btn btn-primary"><span class="glyphicon glyphicon-user"></span> Setup Users</a>
+                    </div>
+                    <div class="col-xs-12" style="margin-top:10px;">
+                        <a href="@Url.Action("Index", "Setup")" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span> Setup Assessments</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body" style="min-height:300px;">
+                    <h4>Statistics:</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+}
