@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -21,6 +22,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
     public class ConductAssessmentViewModel
     {
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
         public List<AnswerQuestonViewModel> Questions { get; set; }
         public AnswerQuestonViewModel Question { get; set; }
         public string GetLevelClass(int order)
@@ -46,6 +48,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
         public int ID { get; set; }
         public string QuestionHeading { get; set; }
         public string QuestionBody { get; set; }
+        [MaxLength(255, ErrorMessage = "Comment must be less than 256 characters long.")]
         public string Comment { get; set; }
         public List<AnswerLevelListItem> Levels { get; set; }
     }

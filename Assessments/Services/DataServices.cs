@@ -295,6 +295,7 @@ namespace Assessments.Services
             var levels = db.AssessmentLevels.ToList();
             var Question = questionID == null ? nextQuestion : db.AssessmentQuestions.Single(o => o.ID == questionID);
             var AssessmentQuestion = db.AssessmentQuestions.Where(o => o.ID == Question.ID).Single();
+            ViewModel.CategoryName = Question.AssessmentCategory.Translation.EN;
             ViewModel.Question = 
                 new AnswerQuestonViewModel
                 {
@@ -355,6 +356,7 @@ namespace Assessments.Services
                                                                          && o.AssessmentQuestionID == ViewModel.Question.ID);
             if(answer != null)
             {
+                answer.Comments = ViewModel.Question.Comment;
                 var checkoffItems = answer.UserAssessmentCheckoffItems.ToList();
                 foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
                 {
@@ -382,7 +384,7 @@ namespace Assessments.Services
                 var checkoffitemid = ViewModel.Question.Levels.SelectMany(y => y.CheckoffItems).First().ID;
                 var question = 
                     db.AssessmentQuestions.Single(o => o.AssessmentCheckoffItems.Any(x => x.ID == checkoffitemid));
-                answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID };
+                answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID, Comments = ViewModel.Question.Comment };
                 answer.UserAssessmentCheckoffItems = new List<UserAssessmentCheckoffItem>();
                 foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
                 {
