@@ -155,6 +155,7 @@ namespace Assessments.Services
             var ViewModel = new SetupEditCategoryViewModel
             {
                 ID = id,
+                AssessmentID = category.AssessmentCollectionID,
                 Levels = db.AssessmentLevels.Select(o =>
                     new SetupAssessmentLevelItem
                     {

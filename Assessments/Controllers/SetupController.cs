@@ -118,5 +118,17 @@ namespace Assessments.Controllers
 
             return PartialView("_CheckoffItem", ViewModel.CheckoffItem);
         }
+
+        [HttpPost]
+        public void UpdateAssessment(int id, SetupCreateCategoriesViewModel ViewModel)
+        {
+            assessmentServices.UpdateAssessment(id, ViewModel.AssessmentName);
+        }
+
+        [HttpPost]
+        public void UpdateCategory(int id, SetupEditCategoryViewModel ViewModel)
+        {
+            assessmentServices.UpdateAssessmentCategory(id, ViewModel.Name);
+        }
     }
 }
