@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,9 @@ namespace Assessments.ViewModels.SetupViewModels
 
     public class SetupEditAssessmentViewModel
     {
+        [Required]
+        [MaxLength(50, ErrorMessage = "Assessment Name must be 50 characters or less")]
+        [Display(Name = "Assessment Name")]
         public string Name { get; set; }
     }
 
@@ -32,6 +36,9 @@ namespace Assessments.ViewModels.SetupViewModels
             Categories = new List<SetupCategoryListItem>();
         }
 
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Assessment Name")]
         public string AssessmentName { get; set; }
         public List<SetupCategoryListItem> Categories { get; set; }
     }
@@ -44,6 +51,9 @@ namespace Assessments.ViewModels.SetupViewModels
 
         public int ID { get; set; }
         public int Order { get; set; }
+
+        [MaxLength(50)]
+        [Display(Name = "Category Name")]
         public string Name { get; set; }
         public List<SetupQuestionListItem> Questions { get; set; }
     }
@@ -74,7 +84,11 @@ namespace Assessments.ViewModels.SetupViewModels
 
         public int ID { get; set; }
         public int Order { get; set; }
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Category Name")]
         public string Name { get; set; }
+        public int AssessmentID { get; set; }
         public SetupQuestionListItem Question { get; set; }
         public SetupAsessmentCheckoffListItem CheckoffItem { get; set; }
         public List<SetupQuestionListItem> Questions { get; set; }

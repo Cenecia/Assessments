@@ -131,6 +131,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-12">
+                            @Html.Partial("_ValidationErrors", ViewData.ModelState)
                             @Html.TextBoxFor(o => o.Name, new { @class = "form-control" })
                         </div>
                     </div>
@@ -176,6 +177,8 @@
         function AfterUpdateCategory() {
             $("#CategoryNameHeader").text($("#@Html.IdFor(o => o.Name)").val());
             $("#editModal").modal("hide");
+            $(".validation-summary-errors").addClass("validation-summary-valid");
+            $(".validation-summary-errors").removeClass("validation-summary-errors");
         }
     </script>
 }

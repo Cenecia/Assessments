@@ -371,6 +371,7 @@
     <Content Include="Views\Assessment\Index.cshtml" />
     <Content Include="Views\Assessment\ConductAssessment.cshtml" />
     <Content Include="Views\Assessment\_QuestionList.cshtml" />
+    <Content Include="Views\Shared\_ValidationErrors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

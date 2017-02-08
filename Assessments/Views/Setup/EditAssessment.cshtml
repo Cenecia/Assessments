@@ -39,6 +39,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
+                        @Html.Partial("_ValidationErrors", ViewData.ModelState)
                         @Html.TextBoxFor(o => o.AssessmentName, new { @class="form-control" })
                     </div>
                 </div>
@@ -87,6 +88,8 @@
         {
             $("#AssessmentNameHeader").text($("#@Html.IdFor(o => o.AssessmentName)").val());
             $("#editModal").modal("hide");
+            $(".validation-summary-errors").addClass("validation-summary-valid");
+            $(".validation-summary-errors").removeClass("validation-summary-errors");
         }
     </script>
 }
