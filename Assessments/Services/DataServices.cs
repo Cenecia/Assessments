@@ -182,7 +182,8 @@ namespace Assessments.Services
                         Heading = o.Translation.EN,
                         Body = o.Translation1.EN,
                         CategoryID = o.AssessmentCategoryID,
-                        QuestionOrder = o.QuestionOrder
+                        QuestionOrder = o.QuestionOrder,
+                        QuestonCode = o.QuestionCode
                     }
                     ).ToList(),
                 Question = questionID == 0 
@@ -192,7 +193,8 @@ namespace Assessments.Services
                         {
                             ID = o.ID,
                             Heading = o.Translation.EN,
-                            Body = o.Translation1.EN
+                            Body = o.Translation1.EN,
+                            QuestonCode = o.QuestionCode
                         }
                     ).Single()
             };
@@ -208,7 +210,7 @@ namespace Assessments.Services
             return ViewModel;
         }
 
-        public int AddQuestion(int id, string heading, string body)
+        public int AddQuestion(int id, string heading, string body, string questionCode)
         {
             var prevQuestion = db.AssessmentQuestions.Where(o => o.AssessmentCategoryID == id).OrderByDescending(o => o.QuestionOrder).FirstOrDefault();
             var question = new AssessmentQuestion
@@ -216,18 +218,20 @@ namespace Assessments.Services
                 AssessmentCategoryID = id,
                 Translation = new Translation { EN = heading },
                 Translation1 = new Translation { EN = body },
-                QuestionOrder = prevQuestion != null ? prevQuestion.QuestionOrder + 1 : 1
+                QuestionOrder = prevQuestion != null ? prevQuestion.QuestionOrder + 1 : 1,
+                QuestionCode = questionCode
             };
             db.AssessmentQuestions.Add(question);
             db.SaveChanges();
             return question.ID;
         }
 
-        public void UpdateQuestion(int id, string heading, string body)
+        public void UpdateQuestion(int id, string heading, string body, string questionCode)
         {
             var question = db.AssessmentQuestions.Single(o => o.ID == id);
             question.Translation.EN = heading != null ? heading : question.Translation.EN;
             question.Translation1.EN = body != null ? body : question.Translation1.EN;
+            question.QuestionCode = questionCode;
             db.SaveChanges();
         }
 

@@ -34,7 +34,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
                 case 2:
                     return "panel-warning";
                 case 3:
-                    return "panel-primary";
+                    return "panel-info";
                 case 4:
                     return "panel-success";
                 default:

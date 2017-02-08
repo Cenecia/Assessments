@@ -88,11 +88,11 @@ namespace Assessments.Controllers
         {
             if(id == 0)
             {
-                id = assessmentServices.AddQuestion(categoryID, question.Heading, question.Body);
+                id = assessmentServices.AddQuestion(categoryID, question.Heading, question.Body, question.QuestonCode);
             }
             else
             {
-                assessmentServices.UpdateQuestion(id, question.Heading, question.Body);
+                assessmentServices.UpdateQuestion(id, question.Heading, question.Body, question.QuestonCode);
             }
             var ViewModel = new SetupEditCategoryViewModel()
             {

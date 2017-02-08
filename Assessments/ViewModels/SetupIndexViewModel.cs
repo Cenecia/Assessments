@@ -66,7 +66,12 @@ namespace Assessments.ViewModels.SetupViewModels
         }
 
         public int ID { get; set; }
+        [Required]
+        [MaxLength(50, ErrorMessage = "Question cannot be more than 50 characters")]
         public string Heading { get; set; }
+        [MaxLength(12, ErrorMessage = "Code cannotbe more than 12 characters")]
+        public string QuestonCode { get; set; }
+        [MaxLength(255, ErrorMessage = "Queston Body must be less than 256 characters long")]
         public string Body { get; set; }
         public List<SetupAsessmentCheckoffListItem> CheckoffItems { get; set; }
         public int CategoryID { get; set; }
@@ -102,11 +107,11 @@ namespace Assessments.ViewModels.SetupViewModels
                 case 2:
                     return "panel-warning";
                 case 3:
-                    return "panel-primary";
+                    return "panel-info";
                 case 4:
                     return "panel-success";
                 default:
-                    return "panel-default";
+                    return "panel-primary";
             }
         }
     }
