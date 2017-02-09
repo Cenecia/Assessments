@@ -8,8 +8,38 @@
     <a href="@Url.Action("Index")" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left"></span>
     </a>
-    <span id="AssessmentNameHeader">@Model.AssessmentName</span> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"><span class="glyphicon glyphicon-edit"></span></button><button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#deleteModal"><span class="glyphicon glyphicon-trash"></span></button></h2>
+    <span id="AssessmentNameHeader">@Model.AssessmentName</span> 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+        <span class="glyphicon glyphicon-edit"></span>
+    </button>
+    <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#deleteModal">
+        <span class="glyphicon glyphicon-trash"></span>
+    </button>
 
+    @if (Model.Live)
+    {
+        <span class="label label-primary">Live</span>
+    }
+    else
+    {
+        <span class="label label-warning">Locked</span>
+    }
+</h2>
+
+@if(!Model.CanUnlock)
+{
+    <div class="alert alert-warning">
+        <h3>The Assessment cannot be made live for the following reasons:</h3>
+        <ul>
+        @foreach(var item in Model.LockedReasons)
+        {
+            <li>
+                @item
+            </li>
+        }
+        </ul>
+    </div>
+}
 
 <div class="row">
     <div class="col-xs-12">

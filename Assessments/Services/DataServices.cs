@@ -101,7 +101,8 @@ namespace Assessments.Services
                 new SetupIndexAssessmentListItem
                 {
                     ID = o.ID,
-                    Name = o.Translation.EN
+                    Name = o.Translation.EN,
+                    Live = o.Active
                 }
             ).ToList();
         }
@@ -134,7 +135,8 @@ namespace Assessments.Services
             var Assessment = db.AssessmentCollections.Single(o => o.ID == id);
             var ViewModel = new SetupCreateCategoriesViewModel
             {
-                AssessmentName = Assessment.Translation.EN
+                AssessmentName = Assessment.Translation.EN,
+                Live = Assessment.Active
             };
 
             ViewModel.Categories = 
@@ -145,6 +147,25 @@ namespace Assessments.Services
                         ID = o.ID
                     }
                 ).ToList();
+
+            if(Assessment.AssessmentCategories.Any(o => o.Translation.EN == null))
+            {
+                ViewModel.LockedReasons.Add("There are Categories that need to be named.");
+            }
+            if(Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(q => q.Translation.EN == null)))
+            {
+                ViewModel.LockedReasons.Add("There are questions that are blank.");
+            }
+
+            if (Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 1)))
+                || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 2)))
+                || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 3)))
+                || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 4))))
+            {
+                ViewModel.LockedReasons.Add("There are Questions without at least one checkoff item per level.");
+            }
+
+            ViewModel.CanUnlock = !ViewModel.LockedReasons.Any();
 
             return ViewModel;
         }

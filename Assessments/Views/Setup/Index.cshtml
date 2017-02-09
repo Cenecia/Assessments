@@ -17,6 +17,16 @@
                 <div class="caption">
                     <h3>@item.Name</h3>
                     <p>
+                    @if (item.Live)
+                    {
+                        <span class="label label-primary">Live</span>
+                    }
+                    else
+                    {
+                        <span class="label label-warning">Locked</span>
+                    }
+                    </p>
+                    <p>
                         <a href="@Url.Action("EditAssessment", new { id = item.ID })" class="btn btn-primary" role="button">Setup</a>
                     </p>
                 </div>

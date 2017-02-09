@@ -23,6 +23,9 @@ namespace Assessments.Models
     
         public int ID { get; set; }
         public int TranslationID { get; set; }
+        public bool Active { get; set; }
+        public Nullable<System.DateTime> AvailableDate { get; set; }
+        public Nullable<System.DateTime> ExpiresDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AssessmentCategory> AssessmentCategories { get; set; }

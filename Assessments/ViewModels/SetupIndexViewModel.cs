@@ -25,8 +25,9 @@ namespace Assessments.ViewModels.SetupViewModels
 
     public class SetupIndexAssessmentListItem
     {
-        public int ID;
-        public string Name;
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public bool Live { get; set; }
     }
 
     public class SetupCreateCategoriesViewModel
@@ -34,12 +35,16 @@ namespace Assessments.ViewModels.SetupViewModels
         public SetupCreateCategoriesViewModel()
         {
             Categories = new List<SetupCategoryListItem>();
+            LockedReasons = new List<string>();
         }
 
         [Required]
         [MaxLength(50)]
         [Display(Name = "Assessment Name")]
         public string AssessmentName { get; set; }
+        public bool Live { get; set; }
+        public bool CanUnlock { get; set; }
+        public List<string> LockedReasons { get; set; }
         public List<SetupCategoryListItem> Categories { get; set; }
     }
     public class SetupCategoryListItem

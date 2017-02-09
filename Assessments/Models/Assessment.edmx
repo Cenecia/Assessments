@@ -90,6 +90,9 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TranslationID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AvailableDate" Type="datetime" />
+          <Property Name="ExpiresDate" Type="datetime" />
         </EntityType>
         <EntityType Name="AssessmentLevel">
           <Key>
@@ -757,6 +760,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TranslationID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AvailableDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpiresDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AssessmentCategories" Relationship="Model.fk_AssessmentCategoryAssessmentCollection" FromRole="AssessmentCollection" ToRole="AssessmentCategory" />
           <NavigationProperty Name="Translation" Relationship="Model.fk_AssessmentCollectionTranslationTitle" FromRole="AssessmentCollection" ToRole="Translation" />
           <NavigationProperty Name="UserAssessments" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="AssessmentCollection" ToRole="UserAssessment" />
@@ -1200,6 +1206,9 @@
           <EntitySetMapping Name="AssessmentCollections">
             <EntityTypeMapping TypeName="Model.AssessmentCollection">
               <MappingFragment StoreEntitySet="AssessmentCollection">
+                <ScalarProperty Name="ExpiresDate" ColumnName="ExpiresDate" />
+                <ScalarProperty Name="AvailableDate" ColumnName="AvailableDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
