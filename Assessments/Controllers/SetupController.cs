@@ -126,6 +126,13 @@ namespace Assessments.Controllers
         }
 
         [HttpPost]
+        public ActionResult ActivateAssessment(int id)
+        {
+            assessmentServices.ActivateAssessment(id);
+            return RedirectToAction("EditAssessment", new { id = id });
+        }
+
+        [HttpPost]
         public void UpdateCategory(int id, SetupEditCategoryViewModel ViewModel)
         {
             assessmentServices.UpdateAssessmentCategory(id, ViewModel.Name);

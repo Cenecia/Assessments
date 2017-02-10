@@ -177,6 +177,7 @@ namespace Assessments.Services
             {
                 ID = id,
                 AssessmentID = category.AssessmentCollectionID,
+                Live = category.AssessmentCollection.Active,
                 Levels = db.AssessmentLevels.Select(o =>
                     new SetupAssessmentLevelItem
                     {
@@ -221,7 +222,11 @@ namespace Assessments.Services
             };
             ViewModel.Name = category.Translation.EN;
 
-            if (questionID == 0)
+            if(category.AssessmentCollection.Active && questionID == 0)
+            {
+                ViewModel.Question = ViewModel.Questions.OrderBy(o => o.QuestionOrder).First();
+            }
+            else if (questionID == 0)
                 ViewModel.Questions.Add(new SetupQuestionListItem());
             else
             {
@@ -281,11 +286,35 @@ namespace Assessments.Services
                 }
             ).ToList();
         }
+
+        public void ActivateAssessment(int id)
+        {
+            var Assessment = db.AssessmentCollections.Single(o => o.ID == id);
+
+            if (!Assessment.Active
+                && !Assessment.AssessmentCategories.Any(o => o.Translation.EN == null)
+                && !Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(q => q.Translation.EN == null))
+                    && !(Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 1)))
+                        || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 2)))
+                        || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 3)))
+                        || Assessment.AssessmentCategories.Any(cat => cat.AssessmentQuestions.Any(o => !o.AssessmentCheckoffItems.Any(x => x.AssessmentLevel.LevelOrder == 4)))
+                    )
+                )
+            {
+                Assessment.Active = true;
+            }
+            else
+            {
+                Assessment.Active = false;
+            }
+
+            db.SaveChanges();
+        }
 #endregion
 
         public List<AssessmentListItem> GetUserAssessments(string userid)
         {
-            return db.AssessmentCollections.Select(o => 
+            return db.AssessmentCollections.Where(o => o.Active).Select(o => 
                 new AssessmentListItem
                 {
                     ID = o.ID,

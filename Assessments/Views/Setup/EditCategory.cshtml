@@ -1,17 +1,20 @@
 ﻿@model Assessments.ViewModels.SetupViewModels.SetupEditCategoryViewModel
 
 @{
-    ViewBag.Title = "EditCategory";
+    ViewBag.Title = "Edit / View Category";
 }
 
 <h2>
     <a href="@Url.Action("EditAssessment", new { id = Model.AssessmentID })" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left"></span>
-    </a> Edit Category - 
+    </a>
     <span id="CategoryNameHeader">@Model.Name</span> 
+    @if (!Model.Live)
+    {
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
         <span class="glyphicon glyphicon-edit"></span>
     </button>
+    }
 </h2>
 
 
@@ -40,13 +43,28 @@
                 
                 <div class="row clearfix">
                     <div class="col-sm-2">
-                        @Html.LabelFor(o => o.Question.QuestonCode)
-                        @Html.TextBoxFor(o => o.Question.QuestonCode, new { @class = "form-control" })
+                        @if (!Model.Live)
+                        {
+                            @Html.LabelFor(o => o.Question.QuestonCode)
+                            @Html.TextBoxFor(o => o.Question.QuestonCode, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            <h4>@Model.Question.QuestonCode</h4>
+                        }
+
                     </div>
                     <div class="col-sm-10">
-                        @Html.HiddenFor(o => o.Question.ID)
-                        @Html.LabelFor(o => o.Question.Heading, new { @class = "" })
-                        @Html.TextBoxFor(o => o.Question.Heading, new { @class = "form-control clearfix" })
+                        @if (!Model.Live)
+                        {
+                            @Html.HiddenFor(o => o.Question.ID)
+                            @Html.LabelFor(o => o.Question.Heading)
+                            @Html.TextBoxFor(o => o.Question.Heading, new { @class = "form-control clearfix" })
+                        }
+                        else
+                        {
+                            <h4>@Model.Question.Heading</h4>
+                        }
                         <span class="hidden text-success questionSaved">Saved</span>
                     </div>
                 </div>
@@ -54,22 +72,33 @@
             <div class="panel-body">
                 <div class="form-group row">
                     <div class="col-xs-12">
-                        @Html.LabelFor(o => o.Question.Body)
-                        @Html.TextAreaFor(o => o.Question.Body, new { @class = "form-control" })
+                        @if (!Model.Live)
+                        {
+                            @Html.LabelFor(o => o.Question.Body)
+                            @Html.TextAreaFor(o => o.Question.Body, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            <p>@Model.Question.Body</p>
+                        }
                     </div>
                 </div>
+                @if (!Model.Live)
+                {
                 <div class="form-group row">
                     <div class="col-xs-12">
+                        
                         <button type="button" id="SaveQuestion" value="Save" class="btn btn-success btn-primary pull-right">
                             <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
                             Save
                         </button>
                     </div>
                 </div>
+                }
                 <div class="row">
                     @for (int i = 0; i < Model.Levels.Count; i++)
                     {
-                    <div class="col-xs-12 col-sm-3">
+                    <div class="col-xs-12 col-sm-6">
                         <div class="panel @Model.GetLevelClass(Model.Levels[i].Order)">
                             <div class="panel-heading">
                                 @Model.Levels[i].Name
@@ -83,6 +112,8 @@
                                 </div>
                                 <div id="NewItem-@Model.Levels[i].ID" class="row">
                                 </div>
+                                @if (!Model.Live)
+                                {
                                 <div class="form-group row">
                                     <div class="col-xs-12">
                                         @Html.TextAreaFor(o => o.Levels[i].CheckoffItem.Wording, new { @class = "form-control" })
@@ -96,6 +127,7 @@
                                         </button>
                                     </div>
                                 </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -104,87 +136,93 @@
             </div>
         </div>
         }
-        @Html.ActionLink("Add Next Question","EditCategory", new { id = Model.ID, qid = 0 }, new { @class = "btn btn-primary" + (Model.Question.ID == 0 ? " hidden hideForNew" : "") })
+        @if(!Model.Live)
+        {
+            @Html.ActionLink("Add Next Question", "EditCategory", new { id = Model.ID, qid = 0 }, new { @class = "btn btn-primary" + (Model.Question.ID == 0 ? " hidden hideForNew" : "") })
+        }
     </div>
 </div>
-@using (Ajax.BeginForm(
-                    "SaveCheckoffItem",
-                    null,
-                    new AjaxOptions { OnSuccess = "AfterCheckoffItemSave", InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "NewItem-0" },
-                    new { id = "CheckoffItemForm" })
-                )
+@if (!Model.Live)
 {
-    @Html.HiddenFor(o => o.CheckoffItem.ID)
-    @Html.HiddenFor(o => o.CheckoffItem.QuestionID, new { @class = "ajaxqid" })
-    @Html.HiddenFor(o => o.CheckoffItem.LevelID)
-    @Html.HiddenFor(o => o.CheckoffItem.Wording)
-}
+    using (Ajax.BeginForm(
+        "SaveCheckoffItem",
+        null,
+        new AjaxOptions { OnSuccess = "AfterCheckoffItemSave", InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "NewItem-0" },
+        new { id = "CheckoffItemForm" })
+    )
+    {
+        @Html.HiddenFor(o => o.CheckoffItem.ID)
+        @Html.HiddenFor(o => o.CheckoffItem.QuestionID, new { @class = "ajaxqid" })
+        @Html.HiddenFor(o => o.CheckoffItem.LevelID)
+        @Html.HiddenFor(o => o.CheckoffItem.Wording)
+    }
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit Assessment</h4>
-            </div>
-            @using (Ajax.BeginForm(
-                "UpdateCategory",
-                new { id = Model.ID },
-                new AjaxOptions { OnSuccess = "AfterUpdateCategory" },
-                new { id = "UpdateCategoryForm" })
-                )
-            {
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            @Html.Partial("_ValidationErrors", ViewData.ModelState)
-                            @Html.TextBoxFor(o => o.Name, new { @class = "form-control" })
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Assessment</h4>
+                </div>
+                @using (Ajax.BeginForm(
+                    "UpdateCategory",
+                    new { id = Model.ID },
+                    new AjaxOptions { OnSuccess = "AfterUpdateCategory" },
+                    new { id = "UpdateCategoryForm" })
+                    )
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @Html.Partial("_ValidationErrors", ViewData.ModelState)
+                                @Html.TextBoxFor(o => o.Name, new { @class = "form-control" })
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            }
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
 
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#SaveQuestion").on("click", function () {
-                $("#QuestionForm").submit();
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#SaveQuestion").on("click", function () {
+                    $("#QuestionForm").submit();
+                });
+                $(".addCheckoffItem").on("click", function () {
+                    var wording = $("#" + $(this).attr("data-wordingid")).val();
+                    if (wording.length > 0) {
+                        $("#@Html.IdFor(o => o.CheckoffItem.ID)").val($(this).attr("data-id"));
+                        $("#@Html.IdFor(o => o.CheckoffItem.LevelID)").val($(this).attr("data-levelid"));
+                        $("#@Html.IdFor(o => o.CheckoffItem.Wording)").val(wording);
+                        $(".ajaxqid").val($(".setupQuestionMenuItem.active").attr("data-qid"));
+                        $("#CheckoffItemForm").attr("data-ajax-update", "#NewItem-" + $(this).attr("data-levelid"));
+                        $("#CheckoffItemForm").submit();
+                        $("#" + $(this).attr("data-wordingid")).val("");
+                    }
+                });
             });
-            $(".addCheckoffItem").on("click", function () {
-                var wording = $("#" + $(this).attr("data-wordingid")).val();
-                if (wording.length > 0) {
-                    $("#@Html.IdFor(o => o.CheckoffItem.ID)").val($(this).attr("data-id"));
-                    $("#@Html.IdFor(o => o.CheckoffItem.LevelID)").val($(this).attr("data-levelid"));
-                    $("#@Html.IdFor(o => o.CheckoffItem.Wording)").val(wording);
-                    $(".ajaxqid").val($(".setupQuestionMenuItem.active").attr("data-qid"));
-                    $("#CheckoffItemForm").attr("data-ajax-update", "#NewItem-" + $(this).attr("data-levelid"));
-                    $("#CheckoffItemForm").submit();
-                    $("#" + $(this).attr("data-wordingid")).val("");
-                }
-            });
-        });
-        function AfterQuestionSave()
-        {
-            $(".hideForNew").removeClass("hidden");
-        }
-        function AfterCheckoffItemSave() {
-            $(".new-c-item").addClass("row");
-        }
-        function AfterUpdateCategory() {
-            $("#CategoryNameHeader").text($("#@Html.IdFor(o => o.Name)").val());
-            $("#editModal").modal("hide");
-            $(".validation-summary-errors").addClass("validation-summary-valid");
-            $(".validation-summary-errors").removeClass("validation-summary-errors");
-        }
-    </script>
+            function AfterQuestionSave()
+            {
+                $(".hideForNew").removeClass("hidden");
+            }
+            function AfterCheckoffItemSave() {
+                $(".new-c-item").addClass("row");
+            }
+            function AfterUpdateCategory() {
+                $("#CategoryNameHeader").text($("#@Html.IdFor(o => o.Name)").val());
+                $("#editModal").modal("hide");
+                $(".validation-summary-errors").addClass("validation-summary-valid");
+                $(".validation-summary-errors").removeClass("validation-summary-errors");
+            }
+        </script>
+    }
 }

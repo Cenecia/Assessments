@@ -99,6 +99,7 @@ namespace Assessments.ViewModels.SetupViewModels
         [Display(Name = "Category Name")]
         public string Name { get; set; }
         public int AssessmentID { get; set; }
+        public bool Live { get; set; }
         public SetupQuestionListItem Question { get; set; }
         public SetupAsessmentCheckoffListItem CheckoffItem { get; set; }
         public List<SetupQuestionListItem> Questions { get; set; }
