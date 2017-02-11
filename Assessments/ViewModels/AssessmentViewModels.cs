@@ -50,6 +50,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
         public string QuestionBody { get; set; }
         [MaxLength(255, ErrorMessage = "Comment must be less than 256 characters long.")]
         public string Comment { get; set; }
+        public int? Score { get; set; }
         public List<AnswerLevelListItem> Levels { get; set; }
     }
 

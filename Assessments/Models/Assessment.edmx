@@ -153,6 +153,7 @@
           <Property Name="AssessmentQuestionID" Type="int" Nullable="false" />
           <Property Name="UserAssessmentCategoryID" Type="int" Nullable="false" />
           <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="Score" Type="int" />
         </EntityType>
         <EntityType Name="UserDetails">
           <Key>
@@ -847,6 +848,7 @@
           <Property Name="AssessmentQuestionID" Type="Int32" Nullable="false" />
           <Property Name="UserAssessmentCategoryID" Type="Int32" Nullable="false" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Score" Type="Int32" />
           <NavigationProperty Name="AssessmentQuestion" Relationship="Model.fk_UserAssessmentQuestionAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="AssessmentQuestion" />
           <NavigationProperty Name="UserAssessmentCategory" Relationship="Model.fk_UserAssessmentQuestionUserAssessmentCategory" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCategory" />
           <NavigationProperty Name="UserAssessmentCheckoffItems" Relationship="Model.fk_UserAssessmentCheckoffItemUserAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCheckoffItem" />
@@ -1274,6 +1276,7 @@
           <EntitySetMapping Name="UserAssessmentQuestions">
             <EntityTypeMapping TypeName="Model.UserAssessmentQuestion">
               <MappingFragment StoreEntitySet="UserAssessmentQuestion">
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="UserAssessmentCategoryID" ColumnName="UserAssessmentCategoryID" />
                 <ScalarProperty Name="AssessmentQuestionID" ColumnName="AssessmentQuestionID" />

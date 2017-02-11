@@ -53,6 +53,7 @@
                                                 {
                                                     <div class="col-xs-12">
                                                         @Html.HiddenFor(o => o.Question.Levels[l].CheckoffItems[i].ID)
+                                                        @Html.HiddenFor(o => o.Question.Levels[l].LevelOrder)
                                                         <label>
                                                             @Html.CheckBoxFor(o => o.Question.Levels[l].CheckoffItems[i].Checked)
                                                             @Model.Question.Levels[l].CheckoffItems[i].Wording

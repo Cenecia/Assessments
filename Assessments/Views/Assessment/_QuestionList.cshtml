@@ -3,7 +3,7 @@
     @foreach (var item in Model.Questions)
     {
 
-        <a href="@Url.Action("ConductAssessment", new { id = Model.CategoryID, qid = item.ID })" class="list-group-item @(item.ID == Model.Question.ID ? "active" : "")">
+        <a href="@Url.Action("ConductAssessment", new { id = Model.CategoryID, qid = item.ID })" class="list-group-item @(item.ID == Model.Question.ID ? "active" : item.Score  == 1 ? "list-group-item-danger" : item.Score == 2 ? "list-group-item-warning" : item.Score == 3 ? "list-group-item-info" : item.Score == 4 ? "list-group-item-success" : "")">
             <h4 class="list-group-item-heading">@item.QuestionHeading</h4>
             <p class="list-group-item-text">@item.QuestionBody</p>
         </a>

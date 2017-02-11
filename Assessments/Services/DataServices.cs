@@ -356,6 +356,7 @@ namespace Assessments.Services
                     ID = AssessmentQuestion.ID,
                     QuestionHeading = AssessmentQuestion.Translation.EN,
                     QuestionBody = AssessmentQuestion.Translation1.EN,
+                    Score = AssessmentQuestion.UserAssessmentQuestions.Any(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid) ? AssessmentQuestion.UserAssessmentQuestions.Single(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid).Score : null,
                     Levels = levels.Select(o => new AnswerLevelListItem {
                         ID = o.ID,
                         Name  = o.Translation.EN,
@@ -370,13 +371,15 @@ namespace Assessments.Services
                     }).ToList()
                 };
 
-            ViewModel.Questions = 
+            ViewModel.Questions =
                 AssessmentQuestion.AssessmentCategory.AssessmentQuestions.Select(o =>
                     new AnswerQuestonViewModel
                     {
                         ID = o.ID,
                         QuestionHeading = o.Translation.EN,
-                        QuestionBody = o.Translation1.EN
+                        QuestionBody = o.Translation1.EN,
+                        Score = o.UserAssessmentQuestions.Any(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid) ?
+                                o.UserAssessmentQuestions.Single(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid).Score : null
                     }
                 ).OrderBy(o => o.ID).ToList();
 
@@ -431,7 +434,6 @@ namespace Assessments.Services
                     }
 
                 }
-                db.SaveChanges();
             }
             else
             {
@@ -480,9 +482,16 @@ namespace Assessments.Services
                     answer.UserAssessmentCategoryID = question.AssessmentCategory.UserAssessmentCategories.Single(o => o.UserAssessment.UserDetail.UserId == userid).ID;
                     db.UserAssessmentQuestions.Add(answer);
                 }
-
-                db.SaveChanges();
             }
+
+            answer.Score = ViewModel.Question.Levels.Any(o => o.LevelOrder == 1 && o.CheckoffItems.Any(x => x.Checked)) ? 1
+                               : ViewModel.Question.Levels.Any(o => o.LevelOrder == 2 && o.CheckoffItems.Any(x => x.Checked)) ? 2
+                               : (ViewModel.Question.Levels.Any(o => o.LevelOrder == 3 && o.CheckoffItems.Any(x => x.Checked))
+                                  && !ViewModel.Question.Levels.Any(y => y.LevelOrder == 4 && y.CheckoffItems.Any(z => z.Checked))) ? 3
+                               : ViewModel.Question.Levels.Any(o => o.LevelOrder == 4 && o.CheckoffItems.Any(x => x.Checked)) ? 4
+                               : 0;
+
+            db.SaveChanges();
 
             return GetNextQuestionId(answer.AssessmentQuestionID);
         }

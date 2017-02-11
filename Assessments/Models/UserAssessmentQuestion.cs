@@ -24,6 +24,7 @@ namespace Assessments.Models
         public int AssessmentQuestionID { get; set; }
         public int UserAssessmentCategoryID { get; set; }
         public string Comments { get; set; }
+        public Nullable<int> Score { get; set; }
     
         public virtual AssessmentQuestion AssessmentQuestion { get; set; }
         public virtual UserAssessmentCategory UserAssessmentCategory { get; set; }
