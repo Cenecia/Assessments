@@ -357,6 +357,7 @@ namespace Assessments.Services
                     QuestionHeading = AssessmentQuestion.Translation.EN,
                     QuestionBody = AssessmentQuestion.Translation1.EN,
                     Score = AssessmentQuestion.UserAssessmentQuestions.Any(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid) ? AssessmentQuestion.UserAssessmentQuestions.Single(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid).Score : null,
+                    QuestionCode = AssessmentQuestion.QuestionCode,
                     Levels = levels.Select(o => new AnswerLevelListItem {
                         ID = o.ID,
                         Name  = o.Translation.EN,
@@ -378,6 +379,7 @@ namespace Assessments.Services
                         ID = o.ID,
                         QuestionHeading = o.Translation.EN,
                         QuestionBody = o.Translation1.EN,
+                        QuestionCode = o.QuestionCode,
                         Score = o.UserAssessmentQuestions.Any(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid) ?
                                 o.UserAssessmentQuestions.Single(x => x.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid).Score : null
                     }

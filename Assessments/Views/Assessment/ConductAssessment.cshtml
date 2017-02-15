@@ -4,7 +4,13 @@
     ViewBag.Title = "EditCategory";
 }
 
-<h2>@Model.CategoryName</h2>
+<h2>
+    <a href="@Url.Action("Index")" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left"></span>
+    </a>
+
+     @Model.CategoryName
+</h2>
 
 
 <div class="row">

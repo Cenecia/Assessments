@@ -46,6 +46,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
     public class AnswerQuestonViewModel
     {
         public int ID { get; set; }
+        public string QuestionCode { get; set; }
         public string QuestionHeading { get; set; }
         public string QuestionBody { get; set; }
         [MaxLength(255, ErrorMessage = "Comment must be less than 256 characters long.")]
