@@ -9,7 +9,11 @@
         <span class="glyphicon glyphicon-circle-arrow-left"></span>
     </a>
 
-     @Model.CategoryName
+     @Model.CategoryName 
+    @if (Model.Score != 0)
+    {
+        <span class="label @(Model.Score < 2 ? "label-danger" : Model.Score < 3 ? "label-warning" : Model.Score < 4 ? "label-info" : "label-success")">@Model.Score</span>
+    }
 </h2>
 
 

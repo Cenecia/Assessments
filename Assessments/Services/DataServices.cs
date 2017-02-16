@@ -391,6 +391,8 @@ namespace Assessments.Services
                     && o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid
                 );
 
+            ViewModel.Score = ViewModel.Questions.Any(o => o.Score != null) ? Math.Round((decimal)ViewModel.Questions.Sum(o => o.Score) / ViewModel.Questions.Count(o => o.Score != null), 1) : 0;
+
             if(Answer != null)
             {
                 ViewModel.Question.Comment = Answer.Comments;
@@ -475,7 +477,7 @@ namespace Assessments.Services
                     }
                     else
                     {
-                        AnswerAssessment = db.UserAssessments.Single(o => o.UserDetail.UserId == userid && o.UserAssessmentCategories.Any(x => x.AssessmentCategoryID == ViewModel.CategoryID));
+                        AnswerAssessment = db.UserAssessments.Single(o => o.UserDetail.UserId == userid && o.AssessmentCollection.AssessmentCategories.Any(x => x.ID == ViewModel.CategoryID));
                         AnswerAssessment.UserAssessmentCategories.Add(AnswerCategory);
                     }
                 }

@@ -25,6 +25,7 @@ namespace Assessments.ViewModels.AssessmentViewModels
         public string CategoryName { get; set; }
         public List<AnswerQuestonViewModel> Questions { get; set; }
         public AnswerQuestonViewModel Question { get; set; }
+        public decimal Score { get; set; }
         public string GetLevelClass(int order)
         {
             switch (order)
