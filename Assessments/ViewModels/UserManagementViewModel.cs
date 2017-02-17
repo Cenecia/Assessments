@@ -15,6 +15,7 @@ namespace Assessments.ViewModels.UserManagementViewModels
         public string LastName { get; set; }
         public string Email { get; set; }
         public bool IsAdmin { get; set; }
+        public bool ActiveUser { get; set; }
     }
 
     public class UserManagementViewModel

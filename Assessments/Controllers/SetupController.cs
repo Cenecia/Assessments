@@ -8,7 +8,8 @@ using Assessments.Services;
 
 namespace Assessments.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "ActiveUser")]
     public class SetupController : Controller
     {
         private DataServices assessmentServices = new DataServices();

@@ -36,6 +36,18 @@
                             Demote User
                         </button>
                     }
+                    @if (!user.ActiveUser)
+                    {
+                        <button type="button" class="btn btn-success btn-sm activateUser" data-toggle="modal" data-target="#activateModal" data-userId="@user.ID">
+                            Re-Activate
+                        </button>
+                    }
+                    else if (user.Email != User.Identity.Name)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm deactivateUser" data-toggle="modal" data-target="#deactivateModal" data-userId="@user.ID">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Deactivate
+                        </button>
+                    }
                 </td>
             </tr>
         }
@@ -96,6 +108,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="activateModal" tabindex="-1" role="dialog" aria-labelledby="activateModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Activate User</h4>
+            </div>
+            <div class="modal-body">
+                Activate this user's account?
+            </div>
+            <div class="modal-footer">
+                @using (Ajax.BeginForm(
+            "ActivateUser",
+            null,
+            new AjaxOptions { OnSuccess = "AfterActivateUser" },
+            new { id = "ActivateUserForm" })
+            )
+                {
+                    @Html.HiddenFor(o => o.User.ID, new { @class = "modalUserId" })
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Activate</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deactivateModal" tabindex="-1" role="dialog" aria-labelledby="deactivateModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Deactivate User</h4>
+            </div>
+            <div class="modal-body">
+                Deactivate this user's account?
+            </div>
+            <div class="modal-footer">
+                @using (Ajax.BeginForm(
+            "DeactivateUser",
+            null,
+            new AjaxOptions { OnSuccess = "AfterDeactivateUser" },
+            new { id = "DeactivateUserForm" })
+            )
+                {
+                    @Html.HiddenFor(o => o.User.ID, new { @class = "modalUserId" })
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-info">Deactivate</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -151,6 +219,12 @@
             $(".demoteUser").on("click", function () {
                 $(".modalUserId").val($(this).attr("data-userId"));
             });
+            $(".activateUser").on("click", function () {
+                $(".modalUserId").val($(this).attr("data-userId"));
+            });
+            $(".deactivateUser").on("click", function () {
+                $(".modalUserId").val($(this).attr("data-userId"));
+            });
             $(".editUser").on("click", function () {
                 $(".modalUserId").val($(this).attr("data-userId"));
                 $("#@Html.IdFor(o => o.User.FirstName)").val($(this).attr("data-fname"));
@@ -179,6 +253,28 @@
             $button.removeClass("demoteUser");
             $button.attr("data-target", "#promoteModal")
             $button.text("Promote to Admin");
+        }
+        function AfterActivateUser() {
+            $("#activateModal").modal("hide");
+            var userid = $(".modalUserId").val();
+            var $button = $('.activateUser[data-userId="' + userid + '"]');
+            $button.addClass("btn-danger");
+            $button.removeClass("btn-success");
+            $button.addClass("deactivateUser");
+            $button.removeClass("activateUser");
+            $button.attr("data-target", "#deactivateModal")
+            $button.html('<span class="glyphicon glyphicon-ban-circle"></span> Deactivate');
+        }
+        function AfterDeactivateUser() {
+            $("#deactivateModal").modal("hide");
+            var userid = $(".modalUserId").val();
+            var $button = $('.deactivateUser[data-userId="' + userid + '"]');
+            $button.addClass("btn-success");
+            $button.removeClass("btn-danger");
+            $button.addClass("activateUser");
+            $button.removeClass("deactivateUser");
+            $button.attr("data-target", "#activateModal")
+            $button.text("Re-Activate");
         }
     </script>
 }

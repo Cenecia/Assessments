@@ -26,16 +26,20 @@ namespace Assessments.Services
                     FirstName = o.FirstName,
                     LastName = o.LastName,
                     Email = o.AspNetUser.Email,
-                    IsAdmin = o.AspNetUser.AspNetRoles.Any(x => x.Name == "Admin")
+                    IsAdmin = o.AspNetUser.AspNetRoles.Any(x => x.Name == "Admin"),
+                    ActiveUser = o.AspNetUser.AspNetRoles.Any(x => x.Name == "ActiveUser")
                 }
             ).ToList();
         }
 
         public void CreateUserDetails(string userid, string firstName, string lastName)
         {
-            db.UserDetails.Add(new UserDetail { UserId = userid, FirstName = firstName, LastName = lastName });
+            var userDetail = new UserDetail { UserId = userid, FirstName = firstName, LastName = lastName };
+            db.UserDetails.Add(userDetail);
 
             db.SaveChanges();
+
+            ActivateUser(userDetail.ID);
         }
 
         public void EditUserDetails(int id, string firstname, string lastname)
@@ -62,6 +66,18 @@ namespace Assessments.Services
         {
             var aspnetuserid = db.UserDetails.Single(o => o.ID == userid).AspNetUser.Email;
             removeRoles(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>(aspnetuserid, "Admin") });
+        }
+
+        public void ActivateUser(int userid)
+        {
+            var aspnetuserid = db.UserDetails.Single(o => o.ID == userid).AspNetUser.Email;
+                setRoles(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>(aspnetuserid, "ActiveUser") });
+        }
+
+        public void DeactivateUser(int userid)
+        {
+            var aspnetuserid = db.UserDetails.Single(o => o.ID == userid).AspNetUser.Email;
+            removeRoles(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>(aspnetuserid, "ActiveUser") });
         }
 
         private void setRoles(List<KeyValuePair<string, string>> userRoles)

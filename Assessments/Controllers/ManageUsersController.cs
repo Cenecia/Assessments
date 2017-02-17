@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace Assessments.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "ActiveUser")]
     public class ManageUsersController : BaseController
     {
         private UsersServices usersServices = new UsersServices();
@@ -38,6 +39,18 @@ namespace Assessments.Controllers
         public void DemoteUser(UserManagementViewModel ViewModel)
         {
             usersServices.DemoteUser(ViewModel.User.ID);
+        }
+
+        [HttpPost]
+        public void ActivateUser(UserManagementViewModel ViewModel)
+        {
+            usersServices.ActivateUser(ViewModel.User.ID);
+        }
+
+        [HttpPost]
+        public void DeactivateUser(UserManagementViewModel ViewModel)
+        {
+            usersServices.DeactivateUser(ViewModel.User.ID);
         }
 
         [HttpPost]

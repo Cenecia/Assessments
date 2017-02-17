@@ -9,7 +9,7 @@ using Assessments.Services;
 
 namespace Assessments.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "ActiveUser")]
     public class AssessmentController : BaseController
     {
         private DataServices assessmentServices = new DataServices();
