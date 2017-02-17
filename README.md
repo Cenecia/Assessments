@@ -23,12 +23,13 @@ This application allows a user to quickly and easily create Assessments such as 
   -Each user can currently only take each assessment once.
   
   -Answers to each question are saved and can be modified
+  
+  -Scoring - scoring system will be similar to the following: checking off any 1s will result in a score of 1, if no 1's are checked, but any level 2 items are checked, score is 2, if no 1's or 2's are checked and any level 3 items are checked, score is 3, if ALL level 3s are checked and all level 4's are checked score is 4. 
 
 
 #In Development Features
 -Registration - will most likely start with closed registration: ie only Admin user can create accounts
 
--Scoring - scoring system will be similar to the following: checking off any 1s will result in a score of 1, if no 1's are checked, but any level 2 items are checked, score is 2, if no 1's or 2's are checked and any level 3 items are checked, score is 3, if ALL level 3s are checked and all level 4's are checked score is 4. 
 
 #Future Features
 ##-Email user confirmation
