@@ -334,7 +334,8 @@ namespace Assessments.Services
         {
             var ViewModel = new ConductAssessmentViewModel
             {
-                CategoryID = id
+                CategoryID = id,
+                UserDetailID = db.UserDetails.Single(o => o.UserId == userid).ID
             };
             
             //next unanswered question if any
@@ -349,6 +350,7 @@ namespace Assessments.Services
             var levels = db.AssessmentLevels.ToList();
             var Question = questionID == null ? nextQuestion : db.AssessmentQuestions.Single(o => o.ID == questionID);
             var AssessmentQuestion = db.AssessmentQuestions.Where(o => o.ID == Question.ID).Single();
+            
             ViewModel.CategoryName = Question.AssessmentCategory.Translation.EN;
             ViewModel.Question = 
                 new AnswerQuestonViewModel
@@ -498,6 +500,11 @@ namespace Assessments.Services
             db.SaveChanges();
 
             return GetNextQuestionId(answer.AssessmentQuestionID);
+        }
+
+        public string GetUserId(int UserDetailID)
+        {
+            return db.AspNetUsers.Single(o => o.UserDetails.Any(x => x.ID == UserDetailID)).Id;
         }
     }
 }

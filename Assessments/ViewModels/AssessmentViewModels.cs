@@ -42,6 +42,8 @@ namespace Assessments.ViewModels.AssessmentViewModels
                     return "panel-default";
             }
         }
+        public bool EditModel { get; set; }
+        public int UserDetailID { get; set; }
     }
 
     public class AnswerQuestonViewModel

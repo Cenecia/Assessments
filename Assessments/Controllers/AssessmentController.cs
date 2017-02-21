@@ -28,6 +28,7 @@ namespace Assessments.Controllers
         public ActionResult ConductAssessment(int id, int? qid = null)
         {
             var ViewModel = assessmentServices.ConductAssessment(UserId(), id, qid);
+            ViewModel.EditModel = true;
             return View(ViewModel);
         }
 
@@ -36,6 +37,15 @@ namespace Assessments.Controllers
         {
             var nextQuestionID = assessmentServices.SaveAnswer(UserId(), ViewModel);
             return RedirectToAction("ConductAssessment", new { id = ViewModel.CategoryID, qid = nextQuestionID });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ViewAssessment(int user, int id, int? qid)
+        {
+            var ViewModel = assessmentServices.ConductAssessment(assessmentServices.GetUserId(user), id, qid);
+            ViewModel.EditModel = false;
+            return View(ViewModel);
         }
     }
 }
