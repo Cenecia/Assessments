@@ -13,6 +13,11 @@ namespace Assessments.Services
         private Entities db = new Entities();
 
 #region Setup
+        /// <summary>
+        /// Creates a new Assessment with given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public int CreateAssessment(string name)
         {
             var newAssessment = new AssessmentCollection
@@ -24,6 +29,11 @@ namespace Assessments.Services
             return newAssessment.ID;
         }
 
+        /// <summary>
+        /// Updates an existing Assessment
+        /// </summary>
+        /// <param name="id">ID of Assessment to update</param>
+        /// <param name="name">Name to update the Assessment to</param>
         public void UpdateAssessment(int id, string name)
         {
             var Translation = db.AssessmentCollections.Single(o => o.ID == id).Translation;
@@ -31,6 +41,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Create a category for an assessment
+        /// </summary>
+        /// <param name="name">Name of Category</param>
+        /// <param name="assessmentId">ID of Assessment to add to</param>
         public void CreateAssessmentCategory(string name, int assessmentId)
         {
             db.AssessmentCategories.Add(
@@ -43,6 +58,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Update Assessment Category
+        /// </summary>
+        /// <param name="id">ID of Category to update</param>
+        /// <param name="name">Name to update Cateogry Name to</param>
         public void UpdateAssessmentCategory(int id, string name)
         {
             var Translation = db.AssessmentCategories.Single(o => o.ID == id).Translation;
@@ -50,7 +70,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
-
+        /// <summary>
+        /// Create a Response Level (ie low, med, high)
+        /// </summary>
+        /// <param name="name">Name of Level</param>
+        /// <param name="order">Sequential Order</param>
         public void CreateAssessmentLevel(string name, int order)
         {
             db.AssessmentLevels.Add(
@@ -63,6 +87,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Update a Response Level
+        /// </summary>
+        /// <param name="id">ID of Level</param>
+        /// <param name="name">Name to update Level to</param>
         public void UpdateAssessmentLevel(int id, string name)
         {
             var Translation = db.AssessmentLevels.Single(o => o.ID == id).Translation;
@@ -70,6 +99,14 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Create a Checkoff item for a Question of a specified Level
+        /// </summary>
+        /// <param name="wording">Wording of Checkoff Item (EN)</param>
+        /// <param name="questionId">ID of Question</param>
+        /// <param name="levelId">ID of Level</param>
+        /// <param name="order">Order Checkoff Item appears in the Level</param>
+        /// <returns></returns>
         public int CreateAssessmentCheckoffItem(string wording, int questionId, int levelId, int order)
         {
             var checkoffItem = new Assessments.Models.AssessmentCheckoffItem
@@ -86,6 +123,13 @@ namespace Assessments.Services
             return checkoffItem.ID;
         }
 
+        /// <summary>
+        /// Update existing Checkoff Item
+        /// </summary>
+        /// <param name="id">ID of Checkoff Item</param>
+        /// <param name="wording">New Wording</param>
+        /// <param name="levelId">New Level ID</param>
+        /// <param name="order">New Order</param>
         public void UpdateAssessmentCheckoffItem(int id, string wording, int levelId, int order)
         {
             var Item = db.AssessmentCheckoffItems.Single(o => o.ID == id);
@@ -95,6 +139,10 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Retrieves all Assessments
+        /// </summary>
+        /// <returns></returns>
         public List<SetupIndexAssessmentListItem> GetAllAssessments()
         {
             return db.AssessmentCollections.Select(o => 
@@ -107,11 +155,21 @@ namespace Assessments.Services
             ).ToList();
         }
 
+        /// <summary>
+        /// Get Name of Assessment by ID
+        /// </summary>
+        /// <param name="id">ID of Assessment</param>
+        /// <returns></returns>
         public string GetAssessmentName(int id)
         {
             return db.AssessmentCollections.Single(o => o.ID == id).Translation.EN;
         }
 
+        /// <summary>
+        /// Create a multiple categories for an Assessment
+        /// </summary>
+        /// <param name="id">ID of Assessment</param>
+        /// <param name="categories">List of Category Names</param>
         public void CreateAssessmentCategories(int id, List<string> categories)
         {
             categories.ForEach(o =>
@@ -130,6 +188,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Get object containing Assessment with its categories. Does not contain questions, checkoff items etc...
+        /// </summary>
+        /// <param name="id">ID of Assessment to retrieve</param>
+        /// <returns></returns>
         public SetupCreateCategoriesViewModel GetAssessmentWithCategories(int id)
         {
             var Assessment = db.AssessmentCollections.Single(o => o.ID == id);
@@ -170,6 +233,12 @@ namespace Assessments.Services
             return ViewModel;
         }
 
+        /// <summary>
+        /// Retrieves object containing all categories, questions, list items, levels for editing.
+        /// </summary>
+        /// <param name="id">ID of Category</param>
+        /// <param name="questionID">ID of currently viewed question</param>
+        /// <returns></returns>
         public SetupEditCategoryViewModel FillEditCategoryViewModel(int id, int questionID)
         {
             var category = db.AssessmentCategories.Single(o => o.ID == id);
@@ -236,6 +305,14 @@ namespace Assessments.Services
             return ViewModel;
         }
 
+        /// <summary>
+        /// Add new Queston to a Category
+        /// </summary>
+        /// <param name="id">ID of Assessment Category</param>
+        /// <param name="heading">Heading of Question</param>
+        /// <param name="body">Body of Question</param>
+        /// <param name="questionCode">Question Code</param>
+        /// <returns></returns>
         public int AddQuestion(int id, string heading, string body, string questionCode)
         {
             var prevQuestion = db.AssessmentQuestions.Where(o => o.AssessmentCategoryID == id).OrderByDescending(o => o.QuestionOrder).FirstOrDefault();
@@ -252,6 +329,13 @@ namespace Assessments.Services
             return question.ID;
         }
 
+        /// <summary>
+        /// Update existing Question
+        /// </summary>
+        /// <param name="id">ID of Question</param>
+        /// <param name="heading">New Question Heading</param>
+        /// <param name="body">New Question Body</param>
+        /// <param name="questionCode">New Question Code</param>
         public void UpdateQuestion(int id, string heading, string body, string questionCode)
         {
             var question = db.AssessmentQuestions.Single(o => o.ID == id);
@@ -261,19 +345,11 @@ namespace Assessments.Services
             db.SaveChanges();
         }
 
-        public int AddCheckoffItem(int id, int levelID, string wording)
-        {
-            var checkoffItem = new Assessments.Models.AssessmentCheckoffItem
-            {
-                AssessmentQuestionID = id,
-                AssessmentLevelID = levelID,
-                Translation = new Translation { EN = wording }
-            };
-            db.AssessmentCheckoffItems.Add(checkoffItem);
-            db.SaveChanges();
-            return checkoffItem.ID;
-        }
-
+        /// <summary>
+        /// Get the list of Questions for a Category
+        /// </summary>
+        /// <param name="id">ID of Category</param>
+        /// <returns></returns>
         public List<SetupQuestionListItem> GetQuestions(int id)
         {
             return db.AssessmentQuestions.Where(o => o.AssessmentCategoryID == id).Select(o => 
@@ -287,6 +363,10 @@ namespace Assessments.Services
             ).ToList();
         }
 
+        /// <summary>
+        /// Toggle an Assessment Active / Deactive. Active Assessments can be filled out by users but cannot be edited in setup while active.
+        /// </summary>
+        /// <param name="id">ID of Assessment to Activate/Deactivate</param>
         public void ActivateAssessment(int id)
         {
             var Assessment = db.AssessmentCollections.Single(o => o.ID == id);
@@ -312,6 +392,11 @@ namespace Assessments.Services
         }
 #endregion
 
+        /// <summary>
+        /// Get List of available Assessments with Category names with the userid's status for tha Assessment (started / not started)
+        /// </summary>
+        /// <param name="userid">raw userid of user</param>
+        /// <returns></returns>
         public List<AssessmentListItem> GetUserAssessments(string userid)
         {
             return db.AssessmentCollections.Where(o => o.Active).Select(o => 
@@ -330,6 +415,13 @@ namespace Assessments.Services
             ).ToList();
         }
 
+        /// <summary>
+        /// Retrieves object containing an Assessment Category and an optional currently selected question (will choose first question if null) to be filled out by user.
+        /// </summary>
+        /// <param name="userid">hashed userid</param>
+        /// <param name="id">ID of Assessment Category</param>
+        /// <param name="questionID">Currently selected question (defaults to first question if null)</param>
+        /// <returns></returns>
         public ConductAssessmentViewModel ConductAssessment(string userid, int id, int? questionID)
         {
             var ViewModel = new ConductAssessmentViewModel
@@ -403,6 +495,11 @@ namespace Assessments.Services
             return ViewModel;
         }
 
+        /// <summary>
+        /// Pass the ID of the current Question to get the ID of the next Question in an Assessment category based on Question Order. Loops back to first Question if there are no Questions with a higher order.
+        /// </summary>
+        /// <param name="id">ID of current Question</param>
+        /// <returns></returns>
         public int GetNextQuestionId(int id)
         {
             var question = db.AssessmentQuestions.Single(o => o.ID == id);
@@ -413,44 +510,56 @@ namespace Assessments.Services
             return question.AssessmentCategory.AssessmentQuestions.OrderBy(o => o.QuestionOrder).First().ID;
         }
 
+        /// <summary>
+        /// Save the response of an assessment including checked off Checkoff Items and Comment
+        /// </summary>
+        /// <param name="userid">hashed userid</param>
+        /// <param name="ViewModel">Object containing Response data</param>
+        /// <returns>ID of next Question in this Category (will loop to first Question at the end)</returns>
         public int SaveAnswer(string userid, ConductAssessmentViewModel ViewModel)
         {
+            //Get the user's response to Question if exists (ie: they have answered this question already and are updating)
             var answer = db.UserAssessmentQuestions.SingleOrDefault(o => o.UserAssessmentCategory.UserAssessment.UserDetail.UserId == userid 
                                                                          && o.AssessmentQuestionID == ViewModel.Question.ID);
-            if(answer != null)
+            if(answer != null) //User has existing response
             {
-                answer.Comments = ViewModel.Question.Comment;
+                answer.Comments = ViewModel.Question.Comment; //Update the comment
+
+                /*  Get all the CheckoffItems for this user's previous response.
+                 *  Most items will have (checked = true) because items not checked off are removed.
+                 */
                 var checkoffItems = answer.UserAssessmentCheckoffItems.ToList();
-                foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
+                foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems)) //For each Checkoff Item in the NEW response
                 {
-                    if(checkoffItems.Any(x => x.AssessmentCheckoffItemID == item.ID))
+                    if(checkoffItems.Any(x => x.AssessmentCheckoffItemID == item.ID)) //User has checked this item off in previous response
                     {
-                        if (item.Checked)
+                        if (item.Checked) //User has checked this item off in new response. Set Checked to true
                         {
                             db.UserAssessmentCheckoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID).Checked = true;
                         }
-                        else
+                        else //User has not checked off this response item. Remove the record.
                         {
                             db.UserAssessmentCheckoffItems.Remove(checkoffItems.Single(o => o.AssessmentCheckoffItemID == item.ID));
                         }
                     }
-                    else if(item.Checked)
+                    else if(item.Checked) //Item did not exist in old response but is checked off in new response. Create new record.
                     {
                         db.UserAssessmentCheckoffItems.Add(new UserAssessmentCheckoffItem { AssessmentCheckoffItemID = item.ID, UserAssessmentQuestionID = answer.ID, Checked = true });
                     }
 
                 }
             }
-            else
+            else //User has not responded to this Question before
             {
+                //Get a Checkoff Item ID to determine Question
                 var checkoffitemid = ViewModel.Question.Levels.SelectMany(y => y.CheckoffItems).First().ID;
-                var question = 
-                    db.AssessmentQuestions.Single(o => o.AssessmentCheckoffItems.Any(x => x.ID == checkoffitemid));
+                //Find Question the CheckoffItem belongs to
+                var question = db.AssessmentQuestions.Single(o => o.AssessmentCheckoffItems.Any(x => x.ID == checkoffitemid));
                 answer = new UserAssessmentQuestion { AssessmentQuestionID = question.ID, Comments = ViewModel.Question.Comment };
                 answer.UserAssessmentCheckoffItems = new List<UserAssessmentCheckoffItem>();
                 foreach(var item in ViewModel.Question.Levels.SelectMany(o => o.CheckoffItems))
                 {
-                    if(item.Checked)
+                    if(item.Checked) //Create record if Checkoff Item is checked. Skip if not checked.
                     {
                         answer.UserAssessmentCheckoffItems.Add(new UserAssessmentCheckoffItem
                         {
@@ -459,7 +568,8 @@ namespace Assessments.Services
                         });
                     }
                 }
-                if(!question.AssessmentCategory.UserAssessmentCategories.Any(o => o.UserAssessment.UserDetail.UserId == userid))
+                //Check if user this is the first Question the user has responded to in the Category (or Assessment)
+                if(!question.AssessmentCategory.UserAssessmentCategories.Any(o => o.UserAssessment.UserDetail.UserId == userid)) //First time answering a Question in this Category
                 {
                     var AnswerAssessment = new UserAssessment();
                     var AnswerCategory = new UserAssessmentCategory
@@ -469,8 +579,10 @@ namespace Assessments.Services
                     };
                     answer.UserAssessmentCategoryID = AnswerCategory.ID;
                     AnswerCategory.UserAssessmentQuestions.Add(answer);
+                    //Check if this is first Question answered in whole Assessment by this user
                     if (!question.AssessmentCategory.AssessmentCollection.UserAssessments.Any(o => o.UserDetail.UserId == userid))
                     {
+                        //First Question answered in whole assessment.
                         AnswerAssessment.UserDetailID = db.UserDetails.Single(o => o.UserId == userid).ID;
                         AnswerAssessment.AssessmentID = question.AssessmentCategory.AssessmentCollectionID;
                         AnswerAssessment.UserAssessmentCategories = new List<UserAssessmentCategory>();
@@ -479,17 +591,20 @@ namespace Assessments.Services
                     }
                     else
                     {
+                        //First question in this category, but not the assessment
                         AnswerAssessment = db.UserAssessments.Single(o => o.UserDetail.UserId == userid && o.AssessmentCollection.AssessmentCategories.Any(x => x.ID == ViewModel.CategoryID));
                         AnswerAssessment.UserAssessmentCategories.Add(AnswerCategory);
                     }
                 }
                 else
                 {
+                    //Not the first question responded to in this category.
                     answer.UserAssessmentCategoryID = question.AssessmentCategory.UserAssessmentCategories.Single(o => o.UserAssessment.UserDetail.UserId == userid).ID;
                     db.UserAssessmentQuestions.Add(answer);
                 }
             }
 
+            //Calculate score. See Documentation for how Score is calculated.
             answer.Score = ViewModel.Question.Levels.Any(o => o.LevelOrder == 1 && o.CheckoffItems.Any(x => x.Checked)) ? 1
                                : ViewModel.Question.Levels.Any(o => o.LevelOrder == 2 && o.CheckoffItems.Any(x => x.Checked)) ? 2
                                : (ViewModel.Question.Levels.Any(o => o.LevelOrder == 3 && o.CheckoffItems.Any(x => x.Checked))
@@ -502,6 +617,11 @@ namespace Assessments.Services
             return GetNextQuestionId(answer.AssessmentQuestionID);
         }
 
+        /// <summary>
+        /// Get the hased userid from the UserDetailID
+        /// </summary>
+        /// <param name="UserDetailID"></param>
+        /// <returns></returns>
         public string GetUserId(int UserDetailID)
         {
             return db.AspNetUsers.Single(o => o.UserDetails.Any(x => x.ID == UserDetailID)).Id;
