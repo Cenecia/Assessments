@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -43,11 +33,11 @@
         </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
-            <PropertyRef Name="UserId" />
             <PropertyRef Name="RoleId" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -66,7 +56,7 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="AssessmentCategory">
+        <EntityType Name="AssessmentCategories">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -74,7 +64,7 @@
           <Property Name="TranslationID" Type="int" Nullable="false" />
           <Property Name="AssessmentCollectionID" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="AssessmentCheckoffItem">
+        <EntityType Name="AssessmentCheckoffItems">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -84,7 +74,7 @@
           <Property Name="AssessmentLevelID" Type="int" Nullable="false" />
           <Property Name="CheckOffItemOrder" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="AssessmentCollection">
+        <EntityType Name="AssessmentCollections">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -94,7 +84,7 @@
           <Property Name="AvailableDate" Type="datetime" />
           <Property Name="ExpiresDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="AssessmentLevel">
+        <EntityType Name="AssessmentLevels">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -102,7 +92,7 @@
           <Property Name="TranslationID" Type="int" Nullable="false" />
           <Property Name="LevelOrder" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="AssessmentQuestion">
+        <EntityType Name="AssessmentQuestions">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -113,22 +103,24 @@
           <Property Name="QuestionOrder" Type="int" Nullable="false" />
           <Property Name="QuestionCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
-        <EntityType Name="Translation">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Translations">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EN" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="UserAssessment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AssessmentID" Type="int" Nullable="false" />
-          <Property Name="UserDetailID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserAssessmentCategory">
+        <EntityType Name="UserAssessmentCategories">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -136,7 +128,7 @@
           <Property Name="AssessmentCategoryID" Type="int" Nullable="false" />
           <Property Name="UserAssessmentID" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserAssessmentCheckoffItem">
+        <EntityType Name="UserAssessmentCheckoffItems">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -145,7 +137,7 @@
           <Property Name="UserAssessmentQuestionID" Type="int" Nullable="false" />
           <Property Name="Checked" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserAssessmentQuestion">
+        <EntityType Name="UserAssessmentQuestions">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -154,6 +146,14 @@
           <Property Name="UserAssessmentCategoryID" Type="int" Nullable="false" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="Score" Type="int" />
+        </EntityType>
+        <EntityType Name="UserAssessments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssessmentID" Type="int" Nullable="false" />
+          <Property Name="UserDetailID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserDetails">
           <Key>
@@ -164,122 +164,146 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
-        <Association Name="fk_AssessmentCategoryAssessmentCollection">
-          <End Role="AssessmentCollection" Type="Self.AssessmentCollection" Multiplicity="1" />
-          <End Role="AssessmentCategory" Type="Self.AssessmentCategory" Multiplicity="*" />
+        <Association Name="FK_AspNetUserRoles_AspNetRole">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentCollection">
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUserRoles_AspNetUser">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_AssessmentCategoryAssessmentCollection">
+          <End Role="AssessmentCollections" Type="Self.AssessmentCollections" Multiplicity="1" />
+          <End Role="AssessmentCategories" Type="Self.AssessmentCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssessmentCollections">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCategory">
+            <Dependent Role="AssessmentCategories">
               <PropertyRef Name="AssessmentCollectionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentCategoryTranslationName">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="1" />
-          <End Role="AssessmentCategory" Type="Self.AssessmentCategory" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="1" />
+          <End Role="AssessmentCategories" Type="Self.AssessmentCategories" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCategory">
+            <Dependent Role="AssessmentCategories">
               <PropertyRef Name="TranslationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentCheckoffItemAssessmentQuestion">
-          <End Role="AssessmentQuestion" Type="Self.AssessmentQuestion" Multiplicity="1" />
-          <End Role="AssessmentCheckoffItem" Type="Self.AssessmentCheckoffItem" Multiplicity="*" />
+          <End Role="AssessmentQuestions" Type="Self.AssessmentQuestions" Multiplicity="1" />
+          <End Role="AssessmentCheckoffItems" Type="Self.AssessmentCheckoffItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentQuestion">
+            <Principal Role="AssessmentQuestions">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCheckoffItem">
+            <Dependent Role="AssessmentCheckoffItems">
               <PropertyRef Name="AssessmentQuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentCheckoffItemTranslationWording">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="1" />
-          <End Role="AssessmentCheckoffItem" Type="Self.AssessmentCheckoffItem" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="1" />
+          <End Role="AssessmentCheckoffItems" Type="Self.AssessmentCheckoffItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCheckoffItem">
+            <Dependent Role="AssessmentCheckoffItems">
               <PropertyRef Name="TranslationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentCollectionTranslationTitle">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="1" />
-          <End Role="AssessmentCollection" Type="Self.AssessmentCollection" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="1" />
+          <End Role="AssessmentCollections" Type="Self.AssessmentCollections" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCollection">
+            <Dependent Role="AssessmentCollections">
               <PropertyRef Name="TranslationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentLevelTranslationName">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="1" />
-          <End Role="AssessmentLevel" Type="Self.AssessmentLevel" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="1" />
+          <End Role="AssessmentLevels" Type="Self.AssessmentLevels" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentLevel">
+            <Dependent Role="AssessmentLevels">
               <PropertyRef Name="TranslationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentQuestionAssessmentCategory">
-          <End Role="AssessmentCategory" Type="Self.AssessmentCategory" Multiplicity="1" />
-          <End Role="AssessmentQuestion" Type="Self.AssessmentQuestion" Multiplicity="*" />
+          <End Role="AssessmentCategories" Type="Self.AssessmentCategories" Multiplicity="1" />
+          <End Role="AssessmentQuestions" Type="Self.AssessmentQuestions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentCategory">
+            <Principal Role="AssessmentCategories">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentQuestion">
+            <Dependent Role="AssessmentQuestions">
               <PropertyRef Name="AssessmentCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentQuestionAssessmentLevel">
-          <End Role="AssessmentLevel" Type="Self.AssessmentLevel" Multiplicity="1" />
-          <End Role="AssessmentCheckoffItem" Type="Self.AssessmentCheckoffItem" Multiplicity="*" />
+          <End Role="AssessmentLevels" Type="Self.AssessmentLevels" Multiplicity="1" />
+          <End Role="AssessmentCheckoffItems" Type="Self.AssessmentCheckoffItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentLevel">
+            <Principal Role="AssessmentLevels">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentCheckoffItem">
+            <Dependent Role="AssessmentCheckoffItems">
               <PropertyRef Name="AssessmentLevelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentQuestionTranslationBody">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="0..1" />
-          <End Role="AssessmentQuestion" Type="Self.AssessmentQuestion" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="0..1" />
+          <End Role="AssessmentQuestions" Type="Self.AssessmentQuestions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentQuestion">
+            <Dependent Role="AssessmentQuestions">
               <PropertyRef Name="BodyTranslationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_AssessmentQuestionTranslationHeading">
-          <End Role="Translation" Type="Self.Translation" Multiplicity="1" />
-          <End Role="AssessmentQuestion" Type="Self.AssessmentQuestion" Multiplicity="*" />
+          <End Role="Translations" Type="Self.Translations" Multiplicity="1" />
+          <End Role="AssessmentQuestions" Type="Self.AssessmentQuestions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Translation">
+            <Principal Role="Translations">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="AssessmentQuestion">
+            <Dependent Role="AssessmentQuestions">
               <PropertyRef Name="HeadingTranslationID" />
             </Dependent>
           </ReferentialConstraint>
@@ -312,126 +336,98 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetRoles">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_UserAssessmentAssessmentCollection">
-          <End Role="AssessmentCollection" Type="Self.AssessmentCollection" Multiplicity="1" />
-          <End Role="UserAssessment" Type="Self.UserAssessment" Multiplicity="*" />
+          <End Role="AssessmentCollections" Type="Self.AssessmentCollections" Multiplicity="1" />
+          <End Role="UserAssessments" Type="Self.UserAssessments" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentCollection">
+            <Principal Role="AssessmentCollections">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessment">
+            <Dependent Role="UserAssessments">
               <PropertyRef Name="AssessmentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentCategoryAssessmentCategory">
-          <End Role="AssessmentCategory" Type="Self.AssessmentCategory" Multiplicity="1" />
-          <End Role="UserAssessmentCategory" Type="Self.UserAssessmentCategory" Multiplicity="*" />
+          <End Role="AssessmentCategories" Type="Self.AssessmentCategories" Multiplicity="1" />
+          <End Role="UserAssessmentCategories" Type="Self.UserAssessmentCategories" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentCategory">
+            <Principal Role="AssessmentCategories">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentCategory">
+            <Dependent Role="UserAssessmentCategories">
               <PropertyRef Name="AssessmentCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentCategoryUserAssessmentID">
-          <End Role="UserAssessment" Type="Self.UserAssessment" Multiplicity="1" />
-          <End Role="UserAssessmentCategory" Type="Self.UserAssessmentCategory" Multiplicity="*" />
+          <End Role="UserAssessments" Type="Self.UserAssessments" Multiplicity="1" />
+          <End Role="UserAssessmentCategories" Type="Self.UserAssessmentCategories" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserAssessment">
+            <Principal Role="UserAssessments">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentCategory">
+            <Dependent Role="UserAssessmentCategories">
               <PropertyRef Name="UserAssessmentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentCheckoffItemAssessmentCheckoffItem">
-          <End Role="AssessmentCheckoffItem" Type="Self.AssessmentCheckoffItem" Multiplicity="1" />
-          <End Role="UserAssessmentCheckoffItem" Type="Self.UserAssessmentCheckoffItem" Multiplicity="*" />
+          <End Role="AssessmentCheckoffItems" Type="Self.AssessmentCheckoffItems" Multiplicity="1" />
+          <End Role="UserAssessmentCheckoffItems" Type="Self.UserAssessmentCheckoffItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentCheckoffItem">
+            <Principal Role="AssessmentCheckoffItems">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentCheckoffItem">
+            <Dependent Role="UserAssessmentCheckoffItems">
               <PropertyRef Name="AssessmentCheckoffItemID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentCheckoffItemUserAssessmentQuestion">
-          <End Role="UserAssessmentQuestion" Type="Self.UserAssessmentQuestion" Multiplicity="1" />
-          <End Role="UserAssessmentCheckoffItem" Type="Self.UserAssessmentCheckoffItem" Multiplicity="*" />
+          <End Role="UserAssessmentQuestions" Type="Self.UserAssessmentQuestions" Multiplicity="1" />
+          <End Role="UserAssessmentCheckoffItems" Type="Self.UserAssessmentCheckoffItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserAssessmentQuestion">
+            <Principal Role="UserAssessmentQuestions">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentCheckoffItem">
+            <Dependent Role="UserAssessmentCheckoffItems">
               <PropertyRef Name="UserAssessmentQuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentQuestionAssessmentQuestion">
-          <End Role="AssessmentQuestion" Type="Self.AssessmentQuestion" Multiplicity="1" />
-          <End Role="UserAssessmentQuestion" Type="Self.UserAssessmentQuestion" Multiplicity="*" />
+          <End Role="AssessmentQuestions" Type="Self.AssessmentQuestions" Multiplicity="1" />
+          <End Role="UserAssessmentQuestions" Type="Self.UserAssessmentQuestions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AssessmentQuestion">
+            <Principal Role="AssessmentQuestions">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentQuestion">
+            <Dependent Role="UserAssessmentQuestions">
               <PropertyRef Name="AssessmentQuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentQuestionUserAssessmentCategory">
-          <End Role="UserAssessmentCategory" Type="Self.UserAssessmentCategory" Multiplicity="1" />
-          <End Role="UserAssessmentQuestion" Type="Self.UserAssessmentQuestion" Multiplicity="*" />
+          <End Role="UserAssessmentCategories" Type="Self.UserAssessmentCategories" Multiplicity="1" />
+          <End Role="UserAssessmentQuestions" Type="Self.UserAssessmentQuestions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserAssessmentCategory">
+            <Principal Role="UserAssessmentCategories">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessmentQuestion">
+            <Dependent Role="UserAssessmentQuestions">
               <PropertyRef Name="UserAssessmentCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserAssessmentUserDetail">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-          <End Role="UserAssessment" Type="Self.UserAssessment" Multiplicity="*" />
+          <End Role="UserAssessments" Type="Self.UserAssessments" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserDetails">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="UserAssessment">
+            <Dependent Role="UserAssessments">
               <PropertyRef Name="UserDetailID" />
             </Dependent>
           </ReferentialConstraint>
@@ -449,62 +445,70 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssessmentCategory" EntityType="Self.AssessmentCategory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssessmentCheckoffItem" EntityType="Self.AssessmentCheckoffItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssessmentCollection" EntityType="Self.AssessmentCollection" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssessmentLevel" EntityType="Self.AssessmentLevel" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssessmentQuestion" EntityType="Self.AssessmentQuestion" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Translation" EntityType="Self.Translation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserAssessment" EntityType="Self.UserAssessment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserAssessmentCategory" EntityType="Self.UserAssessmentCategory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserAssessmentCheckoffItem" EntityType="Self.UserAssessmentCheckoffItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserAssessmentQuestion" EntityType="Self.UserAssessmentQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentCategories" EntityType="Self.AssessmentCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentCheckoffItems" EntityType="Self.AssessmentCheckoffItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentCollections" EntityType="Self.AssessmentCollections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentLevels" EntityType="Self.AssessmentLevels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentQuestions" EntityType="Self.AssessmentQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Translations" EntityType="Self.Translations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAssessmentCategories" EntityType="Self.UserAssessmentCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAssessmentCheckoffItems" EntityType="Self.UserAssessmentCheckoffItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAssessmentQuestions" EntityType="Self.UserAssessmentQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAssessments" EntityType="Self.UserAssessments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetRole" Association="Self.FK_AspNetUserRoles_AspNetRole">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetUser" Association="Self.FK_AspNetUserRoles_AspNetUser">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
           <AssociationSet Name="fk_AssessmentCategoryAssessmentCollection" Association="Self.fk_AssessmentCategoryAssessmentCollection">
-            <End Role="AssessmentCollection" EntitySet="AssessmentCollection" />
-            <End Role="AssessmentCategory" EntitySet="AssessmentCategory" />
+            <End Role="AssessmentCollections" EntitySet="AssessmentCollections" />
+            <End Role="AssessmentCategories" EntitySet="AssessmentCategories" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentCategoryTranslationName" Association="Self.fk_AssessmentCategoryTranslationName">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentCategory" EntitySet="AssessmentCategory" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentCategories" EntitySet="AssessmentCategories" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentCheckoffItemAssessmentQuestion" Association="Self.fk_AssessmentCheckoffItemAssessmentQuestion">
-            <End Role="AssessmentQuestion" EntitySet="AssessmentQuestion" />
-            <End Role="AssessmentCheckoffItem" EntitySet="AssessmentCheckoffItem" />
+            <End Role="AssessmentQuestions" EntitySet="AssessmentQuestions" />
+            <End Role="AssessmentCheckoffItems" EntitySet="AssessmentCheckoffItems" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentCheckoffItemTranslationWording" Association="Self.fk_AssessmentCheckoffItemTranslationWording">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentCheckoffItem" EntitySet="AssessmentCheckoffItem" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentCheckoffItems" EntitySet="AssessmentCheckoffItems" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentCollectionTranslationTitle" Association="Self.fk_AssessmentCollectionTranslationTitle">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentCollection" EntitySet="AssessmentCollection" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentCollections" EntitySet="AssessmentCollections" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentLevelTranslationName" Association="Self.fk_AssessmentLevelTranslationName">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentLevel" EntitySet="AssessmentLevel" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentLevels" EntitySet="AssessmentLevels" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentQuestionAssessmentCategory" Association="Self.fk_AssessmentQuestionAssessmentCategory">
-            <End Role="AssessmentCategory" EntitySet="AssessmentCategory" />
-            <End Role="AssessmentQuestion" EntitySet="AssessmentQuestion" />
+            <End Role="AssessmentCategories" EntitySet="AssessmentCategories" />
+            <End Role="AssessmentQuestions" EntitySet="AssessmentQuestions" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentQuestionAssessmentLevel" Association="Self.fk_AssessmentQuestionAssessmentLevel">
-            <End Role="AssessmentLevel" EntitySet="AssessmentLevel" />
-            <End Role="AssessmentCheckoffItem" EntitySet="AssessmentCheckoffItem" />
+            <End Role="AssessmentLevels" EntitySet="AssessmentLevels" />
+            <End Role="AssessmentCheckoffItems" EntitySet="AssessmentCheckoffItems" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentQuestionTranslationBody" Association="Self.fk_AssessmentQuestionTranslationBody">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentQuestion" EntitySet="AssessmentQuestion" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentQuestions" EntitySet="AssessmentQuestions" />
           </AssociationSet>
           <AssociationSet Name="fk_AssessmentQuestionTranslationHeading" Association="Self.fk_AssessmentQuestionTranslationHeading">
-            <End Role="Translation" EntitySet="Translation" />
-            <End Role="AssessmentQuestion" EntitySet="AssessmentQuestion" />
+            <End Role="Translations" EntitySet="Translations" />
+            <End Role="AssessmentQuestions" EntitySet="AssessmentQuestions" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -514,45 +518,37 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentAssessmentCollection" Association="Self.fk_UserAssessmentAssessmentCollection">
-            <End Role="AssessmentCollection" EntitySet="AssessmentCollection" />
-            <End Role="UserAssessment" EntitySet="UserAssessment" />
+            <End Role="AssessmentCollections" EntitySet="AssessmentCollections" />
+            <End Role="UserAssessments" EntitySet="UserAssessments" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentCategoryAssessmentCategory" Association="Self.fk_UserAssessmentCategoryAssessmentCategory">
-            <End Role="AssessmentCategory" EntitySet="AssessmentCategory" />
-            <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategory" />
+            <End Role="AssessmentCategories" EntitySet="AssessmentCategories" />
+            <End Role="UserAssessmentCategories" EntitySet="UserAssessmentCategories" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentCategoryUserAssessmentID" Association="Self.fk_UserAssessmentCategoryUserAssessmentID">
-            <End Role="UserAssessment" EntitySet="UserAssessment" />
-            <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategory" />
+            <End Role="UserAssessments" EntitySet="UserAssessments" />
+            <End Role="UserAssessmentCategories" EntitySet="UserAssessmentCategories" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentCheckoffItemAssessmentCheckoffItem" Association="Self.fk_UserAssessmentCheckoffItemAssessmentCheckoffItem">
-            <End Role="AssessmentCheckoffItem" EntitySet="AssessmentCheckoffItem" />
-            <End Role="UserAssessmentCheckoffItem" EntitySet="UserAssessmentCheckoffItem" />
+            <End Role="AssessmentCheckoffItems" EntitySet="AssessmentCheckoffItems" />
+            <End Role="UserAssessmentCheckoffItems" EntitySet="UserAssessmentCheckoffItems" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentCheckoffItemUserAssessmentQuestion" Association="Self.fk_UserAssessmentCheckoffItemUserAssessmentQuestion">
-            <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestion" />
-            <End Role="UserAssessmentCheckoffItem" EntitySet="UserAssessmentCheckoffItem" />
+            <End Role="UserAssessmentQuestions" EntitySet="UserAssessmentQuestions" />
+            <End Role="UserAssessmentCheckoffItems" EntitySet="UserAssessmentCheckoffItems" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentQuestionAssessmentQuestion" Association="Self.fk_UserAssessmentQuestionAssessmentQuestion">
-            <End Role="AssessmentQuestion" EntitySet="AssessmentQuestion" />
-            <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestion" />
+            <End Role="AssessmentQuestions" EntitySet="AssessmentQuestions" />
+            <End Role="UserAssessmentQuestions" EntitySet="UserAssessmentQuestions" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentQuestionUserAssessmentCategory" Association="Self.fk_UserAssessmentQuestionUserAssessmentCategory">
-            <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategory" />
-            <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestion" />
+            <End Role="UserAssessmentCategories" EntitySet="UserAssessmentCategories" />
+            <End Role="UserAssessmentQuestions" EntitySet="UserAssessmentQuestions" />
           </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentUserDetail" Association="Self.fk_UserAssessmentUserDetail">
             <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="UserAssessment" EntitySet="UserAssessment" />
+            <End Role="UserAssessments" EntitySet="UserAssessments" />
           </AssociationSet>
           <AssociationSet Name="fk_UserDetailsAspNetUsers" Association="Self.fk_UserDetailsAspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -564,7 +560,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Model.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Model.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Model.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Model.AspNetUserLogin" />
@@ -574,11 +569,12 @@
           <EntitySet Name="AssessmentCollections" EntityType="Model.AssessmentCollection" />
           <EntitySet Name="AssessmentLevels" EntityType="Model.AssessmentLevel" />
           <EntitySet Name="AssessmentQuestions" EntityType="Model.AssessmentQuestion" />
+          <EntitySet Name="C__MigrationHistory" EntityType="Model.C__MigrationHistory" />
           <EntitySet Name="Translations" EntityType="Model.Translation" />
-          <EntitySet Name="UserAssessments" EntityType="Model.UserAssessment" />
           <EntitySet Name="UserAssessmentCategories" EntityType="Model.UserAssessmentCategory" />
           <EntitySet Name="UserAssessmentCheckoffItems" EntityType="Model.UserAssessmentCheckoffItem" />
           <EntitySet Name="UserAssessmentQuestions" EntityType="Model.UserAssessmentQuestion" />
+          <EntitySet Name="UserAssessments" EntityType="Model.UserAssessment" />
           <EntitySet Name="UserDetails" EntityType="Model.UserDetail" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -652,10 +648,6 @@
             <End Role="UserAssessment" EntitySet="UserAssessments" />
             <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategories" />
           </AssociationSet>
-          <AssociationSet Name="fk_UserAssessmentUserDetail" Association="Model.fk_UserAssessmentUserDetail">
-            <End Role="UserDetail" EntitySet="UserDetails" />
-            <End Role="UserAssessment" EntitySet="UserAssessments" />
-          </AssociationSet>
           <AssociationSet Name="fk_UserAssessmentQuestionUserAssessmentCategory" Association="Model.fk_UserAssessmentQuestionUserAssessmentCategory">
             <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategories" />
             <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestions" />
@@ -664,21 +656,15 @@
             <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestions" />
             <End Role="UserAssessmentCheckoffItem" EntitySet="UserAssessmentCheckoffItems" />
           </AssociationSet>
+          <AssociationSet Name="fk_UserAssessmentUserDetail" Association="Model.fk_UserAssessmentUserDetail">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="UserAssessment" EntitySet="UserAssessments" />
+          </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Model.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -794,6 +780,16 @@
           <NavigationProperty Name="Translation1" Relationship="Model.fk_AssessmentQuestionTranslationHeading" FromRole="AssessmentQuestion" ToRole="Translation" />
           <NavigationProperty Name="UserAssessmentQuestions" Relationship="Model.fk_UserAssessmentQuestionAssessmentQuestion" FromRole="AssessmentQuestion" ToRole="UserAssessmentQuestion" />
         </EntityType>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Translation">
           <Key>
             <PropertyRef Name="ID" />
@@ -806,17 +802,6 @@
           <NavigationProperty Name="AssessmentLevels" Relationship="Model.fk_AssessmentLevelTranslationName" FromRole="Translation" ToRole="AssessmentLevel" />
           <NavigationProperty Name="AssessmentQuestions" Relationship="Model.fk_AssessmentQuestionTranslationBody" FromRole="Translation" ToRole="AssessmentQuestion" />
           <NavigationProperty Name="AssessmentQuestions1" Relationship="Model.fk_AssessmentQuestionTranslationHeading" FromRole="Translation" ToRole="AssessmentQuestion" />
-        </EntityType>
-        <EntityType Name="UserAssessment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AssessmentID" Type="Int32" Nullable="false" />
-          <Property Name="UserDetailID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AssessmentCollection" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="UserAssessment" ToRole="AssessmentCollection" />
-          <NavigationProperty Name="UserAssessmentCategories" Relationship="Model.fk_UserAssessmentCategoryUserAssessmentID" FromRole="UserAssessment" ToRole="UserAssessmentCategory" />
-          <NavigationProperty Name="UserDetail" Relationship="Model.fk_UserAssessmentUserDetail" FromRole="UserAssessment" ToRole="UserDetail" />
         </EntityType>
         <EntityType Name="UserAssessmentCategory">
           <Key>
@@ -852,6 +837,17 @@
           <NavigationProperty Name="AssessmentQuestion" Relationship="Model.fk_UserAssessmentQuestionAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="AssessmentQuestion" />
           <NavigationProperty Name="UserAssessmentCategory" Relationship="Model.fk_UserAssessmentQuestionUserAssessmentCategory" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCategory" />
           <NavigationProperty Name="UserAssessmentCheckoffItems" Relationship="Model.fk_UserAssessmentCheckoffItemUserAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCheckoffItem" />
+        </EntityType>
+        <EntityType Name="UserAssessment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssessmentID" Type="Int32" Nullable="false" />
+          <Property Name="UserDetailID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AssessmentCollection" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="UserAssessment" ToRole="AssessmentCollection" />
+          <NavigationProperty Name="UserAssessmentCategories" Relationship="Model.fk_UserAssessmentCategoryUserAssessmentID" FromRole="UserAssessment" ToRole="UserAssessmentCategory" />
+          <NavigationProperty Name="UserDetail" Relationship="Model.fk_UserAssessmentUserDetail" FromRole="UserAssessment" ToRole="UserDetail" />
         </EntityType>
         <EntityType Name="UserDetail">
           <Key>
@@ -1084,18 +1080,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_UserAssessmentUserDetail">
-          <End Type="Model.UserDetail" Role="UserDetail" Multiplicity="1" />
-          <End Type="Model.UserAssessment" Role="UserAssessment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetail">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserAssessment">
-              <PropertyRef Name="UserDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_UserAssessmentQuestionUserAssessmentCategory">
           <End Type="Model.UserAssessmentCategory" Role="UserAssessmentCategory" Multiplicity="1" />
           <End Type="Model.UserAssessmentQuestion" Role="UserAssessmentQuestion" Multiplicity="*" />
@@ -1120,6 +1104,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_UserAssessmentUserDetail">
+          <End Type="Model.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="Model.UserAssessment" Role="UserAssessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserAssessment">
+              <PropertyRef Name="UserDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="AspNetUserRoles">
           <End Type="Model.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="Model.AspNetUser" Role="AspNetUser" Multiplicity="*" />
@@ -1128,18 +1124,8 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="Model.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="Model.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
@@ -1187,7 +1173,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="AssessmentCategories">
             <EntityTypeMapping TypeName="Model.AssessmentCategory">
-              <MappingFragment StoreEntitySet="AssessmentCategory">
+              <MappingFragment StoreEntitySet="AssessmentCategories">
                 <ScalarProperty Name="AssessmentCollectionID" ColumnName="AssessmentCollectionID" />
                 <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -1196,7 +1182,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="AssessmentCheckoffItems">
             <EntityTypeMapping TypeName="Model.AssessmentCheckoffItem">
-              <MappingFragment StoreEntitySet="AssessmentCheckoffItem">
+              <MappingFragment StoreEntitySet="AssessmentCheckoffItems">
                 <ScalarProperty Name="CheckOffItemOrder" ColumnName="CheckOffItemOrder" />
                 <ScalarProperty Name="AssessmentLevelID" ColumnName="AssessmentLevelID" />
                 <ScalarProperty Name="AssessmentQuestionID" ColumnName="AssessmentQuestionID" />
@@ -1207,7 +1193,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="AssessmentCollections">
             <EntityTypeMapping TypeName="Model.AssessmentCollection">
-              <MappingFragment StoreEntitySet="AssessmentCollection">
+              <MappingFragment StoreEntitySet="AssessmentCollections">
                 <ScalarProperty Name="ExpiresDate" ColumnName="ExpiresDate" />
                 <ScalarProperty Name="AvailableDate" ColumnName="AvailableDate" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
@@ -1218,7 +1204,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="AssessmentLevels">
             <EntityTypeMapping TypeName="Model.AssessmentLevel">
-              <MappingFragment StoreEntitySet="AssessmentLevel">
+              <MappingFragment StoreEntitySet="AssessmentLevels">
                 <ScalarProperty Name="LevelOrder" ColumnName="LevelOrder" />
                 <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -1227,7 +1213,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="AssessmentQuestions">
             <EntityTypeMapping TypeName="Model.AssessmentQuestion">
-              <MappingFragment StoreEntitySet="AssessmentQuestion">
+              <MappingFragment StoreEntitySet="AssessmentQuestions">
                 <ScalarProperty Name="QuestionCode" ColumnName="QuestionCode" />
                 <ScalarProperty Name="QuestionOrder" ColumnName="QuestionOrder" />
                 <ScalarProperty Name="BodyTranslationID" ColumnName="BodyTranslationID" />
@@ -1237,26 +1223,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Translations">
-            <EntityTypeMapping TypeName="Model.Translation">
-              <MappingFragment StoreEntitySet="Translation">
-                <ScalarProperty Name="EN" ColumnName="EN" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="Model.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="C__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserAssessments">
-            <EntityTypeMapping TypeName="Model.UserAssessment">
-              <MappingFragment StoreEntitySet="UserAssessment">
-                <ScalarProperty Name="UserDetailID" ColumnName="UserDetailID" />
-                <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
+          <EntitySetMapping Name="Translations">
+            <EntityTypeMapping TypeName="Model.Translation">
+              <MappingFragment StoreEntitySet="Translations">
+                <ScalarProperty Name="EN" ColumnName="EN" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserAssessmentCategories">
             <EntityTypeMapping TypeName="Model.UserAssessmentCategory">
-              <MappingFragment StoreEntitySet="UserAssessmentCategory">
+              <MappingFragment StoreEntitySet="UserAssessmentCategories">
                 <ScalarProperty Name="UserAssessmentID" ColumnName="UserAssessmentID" />
                 <ScalarProperty Name="AssessmentCategoryID" ColumnName="AssessmentCategoryID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -1265,7 +1252,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="UserAssessmentCheckoffItems">
             <EntityTypeMapping TypeName="Model.UserAssessmentCheckoffItem">
-              <MappingFragment StoreEntitySet="UserAssessmentCheckoffItem">
+              <MappingFragment StoreEntitySet="UserAssessmentCheckoffItems">
                 <ScalarProperty Name="Checked" ColumnName="Checked" />
                 <ScalarProperty Name="UserAssessmentQuestionID" ColumnName="UserAssessmentQuestionID" />
                 <ScalarProperty Name="AssessmentCheckoffItemID" ColumnName="AssessmentCheckoffItemID" />
@@ -1275,11 +1262,20 @@
           </EntitySetMapping>
           <EntitySetMapping Name="UserAssessmentQuestions">
             <EntityTypeMapping TypeName="Model.UserAssessmentQuestion">
-              <MappingFragment StoreEntitySet="UserAssessmentQuestion">
+              <MappingFragment StoreEntitySet="UserAssessmentQuestions">
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="UserAssessmentCategoryID" ColumnName="UserAssessmentCategoryID" />
                 <ScalarProperty Name="AssessmentQuestionID" ColumnName="AssessmentQuestionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAssessments">
+            <EntityTypeMapping TypeName="Model.UserAssessment">
+              <MappingFragment StoreEntitySet="UserAssessments">
+                <ScalarProperty Name="UserDetailID" ColumnName="UserDetailID" />
+                <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1303,8 +1299,7 @@
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -1318,7 +1313,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

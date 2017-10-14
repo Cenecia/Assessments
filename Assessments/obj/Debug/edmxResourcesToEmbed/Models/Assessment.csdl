@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="C__MigrationHistory" EntityType="Model.C__MigrationHistory" />
     <EntitySet Name="AspNetRoles" EntityType="Model.AspNetRole" />
     <EntitySet Name="AspNetUserClaims" EntityType="Model.AspNetUserClaim" />
     <EntitySet Name="AspNetUserLogins" EntityType="Model.AspNetUserLogin" />
@@ -11,11 +10,12 @@
     <EntitySet Name="AssessmentCollections" EntityType="Model.AssessmentCollection" />
     <EntitySet Name="AssessmentLevels" EntityType="Model.AssessmentLevel" />
     <EntitySet Name="AssessmentQuestions" EntityType="Model.AssessmentQuestion" />
+    <EntitySet Name="C__MigrationHistory" EntityType="Model.C__MigrationHistory" />
     <EntitySet Name="Translations" EntityType="Model.Translation" />
-    <EntitySet Name="UserAssessments" EntityType="Model.UserAssessment" />
     <EntitySet Name="UserAssessmentCategories" EntityType="Model.UserAssessmentCategory" />
     <EntitySet Name="UserAssessmentCheckoffItems" EntityType="Model.UserAssessmentCheckoffItem" />
     <EntitySet Name="UserAssessmentQuestions" EntityType="Model.UserAssessmentQuestion" />
+    <EntitySet Name="UserAssessments" EntityType="Model.UserAssessment" />
     <EntitySet Name="UserDetails" EntityType="Model.UserDetail" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -89,10 +89,6 @@
       <End Role="UserAssessment" EntitySet="UserAssessments" />
       <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategories" />
     </AssociationSet>
-    <AssociationSet Name="fk_UserAssessmentUserDetail" Association="Model.fk_UserAssessmentUserDetail">
-      <End Role="UserDetail" EntitySet="UserDetails" />
-      <End Role="UserAssessment" EntitySet="UserAssessments" />
-    </AssociationSet>
     <AssociationSet Name="fk_UserAssessmentQuestionUserAssessmentCategory" Association="Model.fk_UserAssessmentQuestionUserAssessmentCategory">
       <End Role="UserAssessmentCategory" EntitySet="UserAssessmentCategories" />
       <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestions" />
@@ -101,21 +97,15 @@
       <End Role="UserAssessmentQuestion" EntitySet="UserAssessmentQuestions" />
       <End Role="UserAssessmentCheckoffItem" EntitySet="UserAssessmentCheckoffItems" />
     </AssociationSet>
+    <AssociationSet Name="fk_UserAssessmentUserDetail" Association="Model.fk_UserAssessmentUserDetail">
+      <End Role="UserDetail" EntitySet="UserDetails" />
+      <End Role="UserAssessment" EntitySet="UserAssessments" />
+    </AssociationSet>
     <AssociationSet Name="AspNetUserRoles" Association="Model.AspNetUserRoles">
       <End Role="AspNetRole" EntitySet="AspNetRoles" />
       <End Role="AspNetUser" EntitySet="AspNetUsers" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="C__MigrationHistory">
-    <Key>
-      <PropertyRef Name="MigrationId" />
-      <PropertyRef Name="ContextKey" />
-    </Key>
-    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="AspNetRole">
     <Key>
       <PropertyRef Name="Id" />
@@ -198,6 +188,9 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="TranslationID" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AvailableDate" Type="DateTime" Precision="3" />
+    <Property Name="ExpiresDate" Type="DateTime" Precision="3" />
     <NavigationProperty Name="AssessmentCategories" Relationship="Model.fk_AssessmentCategoryAssessmentCollection" FromRole="AssessmentCollection" ToRole="AssessmentCategory" />
     <NavigationProperty Name="Translation" Relationship="Model.fk_AssessmentCollectionTranslationTitle" FromRole="AssessmentCollection" ToRole="Translation" />
     <NavigationProperty Name="UserAssessments" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="AssessmentCollection" ToRole="UserAssessment" />
@@ -220,11 +213,23 @@
     <Property Name="HeadingTranslationID" Type="Int32" Nullable="false" />
     <Property Name="AssessmentCategoryID" Type="Int32" Nullable="false" />
     <Property Name="BodyTranslationID" Type="Int32" />
+    <Property Name="QuestionOrder" Type="Int32" Nullable="false" />
+    <Property Name="QuestionCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="AssessmentCategory" Relationship="Model.fk_AssessmentQuestionAssessmentCategory" FromRole="AssessmentQuestion" ToRole="AssessmentCategory" />
     <NavigationProperty Name="AssessmentCheckoffItems" Relationship="Model.fk_AssessmentCheckoffItemAssessmentQuestion" FromRole="AssessmentQuestion" ToRole="AssessmentCheckoffItem" />
     <NavigationProperty Name="Translation" Relationship="Model.fk_AssessmentQuestionTranslationBody" FromRole="AssessmentQuestion" ToRole="Translation" />
     <NavigationProperty Name="Translation1" Relationship="Model.fk_AssessmentQuestionTranslationHeading" FromRole="AssessmentQuestion" ToRole="Translation" />
     <NavigationProperty Name="UserAssessmentQuestions" Relationship="Model.fk_UserAssessmentQuestionAssessmentQuestion" FromRole="AssessmentQuestion" ToRole="UserAssessmentQuestion" />
+  </EntityType>
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Translation">
     <Key>
@@ -238,17 +243,6 @@
     <NavigationProperty Name="AssessmentLevels" Relationship="Model.fk_AssessmentLevelTranslationName" FromRole="Translation" ToRole="AssessmentLevel" />
     <NavigationProperty Name="AssessmentQuestions" Relationship="Model.fk_AssessmentQuestionTranslationBody" FromRole="Translation" ToRole="AssessmentQuestion" />
     <NavigationProperty Name="AssessmentQuestions1" Relationship="Model.fk_AssessmentQuestionTranslationHeading" FromRole="Translation" ToRole="AssessmentQuestion" />
-  </EntityType>
-  <EntityType Name="UserAssessment">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="AssessmentID" Type="Int32" Nullable="false" />
-    <Property Name="UserDetailID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="AssessmentCollection" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="UserAssessment" ToRole="AssessmentCollection" />
-    <NavigationProperty Name="UserAssessmentCategories" Relationship="Model.fk_UserAssessmentCategoryUserAssessmentID" FromRole="UserAssessment" ToRole="UserAssessmentCategory" />
-    <NavigationProperty Name="UserDetail" Relationship="Model.fk_UserAssessmentUserDetail" FromRole="UserAssessment" ToRole="UserDetail" />
   </EntityType>
   <EntityType Name="UserAssessmentCategory">
     <Key>
@@ -280,9 +274,21 @@
     <Property Name="AssessmentQuestionID" Type="Int32" Nullable="false" />
     <Property Name="UserAssessmentCategoryID" Type="Int32" Nullable="false" />
     <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Score" Type="Int32" />
     <NavigationProperty Name="AssessmentQuestion" Relationship="Model.fk_UserAssessmentQuestionAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="AssessmentQuestion" />
     <NavigationProperty Name="UserAssessmentCategory" Relationship="Model.fk_UserAssessmentQuestionUserAssessmentCategory" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCategory" />
     <NavigationProperty Name="UserAssessmentCheckoffItems" Relationship="Model.fk_UserAssessmentCheckoffItemUserAssessmentQuestion" FromRole="UserAssessmentQuestion" ToRole="UserAssessmentCheckoffItem" />
+  </EntityType>
+  <EntityType Name="UserAssessment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AssessmentID" Type="Int32" Nullable="false" />
+    <Property Name="UserDetailID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AssessmentCollection" Relationship="Model.fk_UserAssessmentAssessmentCollection" FromRole="UserAssessment" ToRole="AssessmentCollection" />
+    <NavigationProperty Name="UserAssessmentCategories" Relationship="Model.fk_UserAssessmentCategoryUserAssessmentID" FromRole="UserAssessment" ToRole="UserAssessmentCategory" />
+    <NavigationProperty Name="UserDetail" Relationship="Model.fk_UserAssessmentUserDetail" FromRole="UserAssessment" ToRole="UserDetail" />
   </EntityType>
   <EntityType Name="UserDetail">
     <Key>
@@ -515,18 +521,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_UserAssessmentUserDetail">
-    <End Type="Model.UserDetail" Role="UserDetail" Multiplicity="1" />
-    <End Type="Model.UserAssessment" Role="UserAssessment" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UserDetail">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="UserAssessment">
-        <PropertyRef Name="UserDetailID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="fk_UserAssessmentQuestionUserAssessmentCategory">
     <End Type="Model.UserAssessmentCategory" Role="UserAssessmentCategory" Multiplicity="1" />
     <End Type="Model.UserAssessmentQuestion" Role="UserAssessmentQuestion" Multiplicity="*" />
@@ -548,6 +542,18 @@
       </Principal>
       <Dependent Role="UserAssessmentCheckoffItem">
         <PropertyRef Name="UserAssessmentQuestionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserAssessmentUserDetail">
+    <End Type="Model.UserDetail" Role="UserDetail" Multiplicity="1" />
+    <End Type="Model.UserAssessment" Role="UserAssessment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetail">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="UserAssessment">
+        <PropertyRef Name="UserDetailID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -295,6 +296,7 @@
       <DependentUpon>Assessment.edmx</DependentUpon>
       <LastGenOutput>Assessment.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\Assessment.edmx.sql" />
     <Content Include="Models\Assessment.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Assessment.edmx</DependentUpon>

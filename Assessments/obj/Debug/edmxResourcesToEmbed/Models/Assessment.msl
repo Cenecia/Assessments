@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-    <EntitySetMapping Name="C__MigrationHistory">
-      <EntityTypeMapping TypeName="Model.C__MigrationHistory">
-        <MappingFragment StoreEntitySet="__MigrationHistory">
-          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-          <ScalarProperty Name="Model" ColumnName="Model" />
-          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="AspNetRoles">
       <EntityTypeMapping TypeName="Model.AspNetRole">
         <MappingFragment StoreEntitySet="AspNetRoles">
@@ -58,7 +48,7 @@
     </EntitySetMapping>
     <EntitySetMapping Name="AssessmentCategories">
       <EntityTypeMapping TypeName="Model.AssessmentCategory">
-        <MappingFragment StoreEntitySet="AssessmentCategory">
+        <MappingFragment StoreEntitySet="AssessmentCategories">
           <ScalarProperty Name="AssessmentCollectionID" ColumnName="AssessmentCollectionID" />
           <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -67,7 +57,7 @@
     </EntitySetMapping>
     <EntitySetMapping Name="AssessmentCheckoffItems">
       <EntityTypeMapping TypeName="Model.AssessmentCheckoffItem">
-        <MappingFragment StoreEntitySet="AssessmentCheckoffItem">
+        <MappingFragment StoreEntitySet="AssessmentCheckoffItems">
           <ScalarProperty Name="CheckOffItemOrder" ColumnName="CheckOffItemOrder" />
           <ScalarProperty Name="AssessmentLevelID" ColumnName="AssessmentLevelID" />
           <ScalarProperty Name="AssessmentQuestionID" ColumnName="AssessmentQuestionID" />
@@ -78,7 +68,10 @@
     </EntitySetMapping>
     <EntitySetMapping Name="AssessmentCollections">
       <EntityTypeMapping TypeName="Model.AssessmentCollection">
-        <MappingFragment StoreEntitySet="AssessmentCollection">
+        <MappingFragment StoreEntitySet="AssessmentCollections">
+          <ScalarProperty Name="ExpiresDate" ColumnName="ExpiresDate" />
+          <ScalarProperty Name="AvailableDate" ColumnName="AvailableDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
@@ -86,7 +79,7 @@
     </EntitySetMapping>
     <EntitySetMapping Name="AssessmentLevels">
       <EntityTypeMapping TypeName="Model.AssessmentLevel">
-        <MappingFragment StoreEntitySet="AssessmentLevel">
+        <MappingFragment StoreEntitySet="AssessmentLevels">
           <ScalarProperty Name="LevelOrder" ColumnName="LevelOrder" />
           <ScalarProperty Name="TranslationID" ColumnName="TranslationID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -95,7 +88,9 @@
     </EntitySetMapping>
     <EntitySetMapping Name="AssessmentQuestions">
       <EntityTypeMapping TypeName="Model.AssessmentQuestion">
-        <MappingFragment StoreEntitySet="AssessmentQuestion">
+        <MappingFragment StoreEntitySet="AssessmentQuestions">
+          <ScalarProperty Name="QuestionCode" ColumnName="QuestionCode" />
+          <ScalarProperty Name="QuestionOrder" ColumnName="QuestionOrder" />
           <ScalarProperty Name="BodyTranslationID" ColumnName="BodyTranslationID" />
           <ScalarProperty Name="AssessmentCategoryID" ColumnName="AssessmentCategoryID" />
           <ScalarProperty Name="HeadingTranslationID" ColumnName="HeadingTranslationID" />
@@ -103,26 +98,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Translations">
-      <EntityTypeMapping TypeName="Model.Translation">
-        <MappingFragment StoreEntitySet="Translation">
-          <ScalarProperty Name="EN" ColumnName="EN" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
+    <EntitySetMapping Name="C__MigrationHistory">
+      <EntityTypeMapping TypeName="Model.C__MigrationHistory">
+        <MappingFragment StoreEntitySet="C__MigrationHistory">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="UserAssessments">
-      <EntityTypeMapping TypeName="Model.UserAssessment">
-        <MappingFragment StoreEntitySet="UserAssessment">
-          <ScalarProperty Name="UserDetailID" ColumnName="UserDetailID" />
-          <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
+    <EntitySetMapping Name="Translations">
+      <EntityTypeMapping TypeName="Model.Translation">
+        <MappingFragment StoreEntitySet="Translations">
+          <ScalarProperty Name="EN" ColumnName="EN" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="UserAssessmentCategories">
       <EntityTypeMapping TypeName="Model.UserAssessmentCategory">
-        <MappingFragment StoreEntitySet="UserAssessmentCategory">
+        <MappingFragment StoreEntitySet="UserAssessmentCategories">
           <ScalarProperty Name="UserAssessmentID" ColumnName="UserAssessmentID" />
           <ScalarProperty Name="AssessmentCategoryID" ColumnName="AssessmentCategoryID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -131,7 +127,7 @@
     </EntitySetMapping>
     <EntitySetMapping Name="UserAssessmentCheckoffItems">
       <EntityTypeMapping TypeName="Model.UserAssessmentCheckoffItem">
-        <MappingFragment StoreEntitySet="UserAssessmentCheckoffItem">
+        <MappingFragment StoreEntitySet="UserAssessmentCheckoffItems">
           <ScalarProperty Name="Checked" ColumnName="Checked" />
           <ScalarProperty Name="UserAssessmentQuestionID" ColumnName="UserAssessmentQuestionID" />
           <ScalarProperty Name="AssessmentCheckoffItemID" ColumnName="AssessmentCheckoffItemID" />
@@ -141,10 +137,20 @@
     </EntitySetMapping>
     <EntitySetMapping Name="UserAssessmentQuestions">
       <EntityTypeMapping TypeName="Model.UserAssessmentQuestion">
-        <MappingFragment StoreEntitySet="UserAssessmentQuestion">
+        <MappingFragment StoreEntitySet="UserAssessmentQuestions">
+          <ScalarProperty Name="Score" ColumnName="Score" />
           <ScalarProperty Name="Comments" ColumnName="Comments" />
           <ScalarProperty Name="UserAssessmentCategoryID" ColumnName="UserAssessmentCategoryID" />
           <ScalarProperty Name="AssessmentQuestionID" ColumnName="AssessmentQuestionID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAssessments">
+      <EntityTypeMapping TypeName="Model.UserAssessment">
+        <MappingFragment StoreEntitySet="UserAssessments">
+          <ScalarProperty Name="UserDetailID" ColumnName="UserDetailID" />
+          <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

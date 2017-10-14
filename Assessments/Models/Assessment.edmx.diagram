@@ -5,22 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="87e01e49d6c7425798bf1063db36d09b" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Model.AspNetRole" Width="1.5" PointX="1.5" PointY="21.75" />
-        <EntityTypeShape EntityType="Model.AspNetUserClaim" Width="1.5" PointX="3" PointY="24.875" />
-        <EntityTypeShape EntityType="Model.AspNetUserLogin" Width="1.5" PointX="3" PointY="9.25" />
-        <EntityTypeShape EntityType="Model.AspNetUser" Width="1.5" PointX="0.75" PointY="16.5" />
-        <EntityTypeShape EntityType="Model.AssessmentCategory" Width="1.5" PointX="5.25" PointY="10.125" />
-        <EntityTypeShape EntityType="Model.AssessmentCheckoffItem" Width="1.5" PointX="9.75" PointY="7.75" />
-        <EntityTypeShape EntityType="Model.AssessmentCollection" Width="1.5" PointX="3" PointY="12.25" />
-        <EntityTypeShape EntityType="Model.AssessmentLevel" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="Model.AssessmentQuestion" Width="1.5" PointX="7.5" PointY="8.625" />
+        <EntityTypeShape EntityType="Model.AspNetRole" Width="1.5" PointX="1.5" PointY="16.875" />
+        <EntityTypeShape EntityType="Model.AspNetUserClaim" Width="1.5" PointX="3" PointY="9.875" />
+        <EntityTypeShape EntityType="Model.AspNetUserLogin" Width="1.5" PointX="3" PointY="19.375" />
+        <EntityTypeShape EntityType="Model.AspNetUser" Width="1.5" PointX="0.75" PointY="11.625" />
+        <EntityTypeShape EntityType="Model.AssessmentCategory" Width="1.5" PointX="5.25" PointY="10.25" />
+        <EntityTypeShape EntityType="Model.AssessmentCheckoffItem" Width="1.5" PointX="12.75" PointY="10" />
+        <EntityTypeShape EntityType="Model.AssessmentCollection" Width="1.5" PointX="3" PointY="6.5" />
+        <EntityTypeShape EntityType="Model.AssessmentLevel" Width="1.5" PointX="3" PointY="12.875" />
+        <EntityTypeShape EntityType="Model.AssessmentQuestion" Width="1.5" PointX="7.5" PointY="11.625" />
+        <EntityTypeShape EntityType="Model.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="Model.Translation" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="Model.UserAssessment" Width="1.5" PointX="5.25" PointY="13.5" />
-        <EntityTypeShape EntityType="Model.UserAssessmentCategory" Width="1.5" PointX="7.5" PointY="12.75" />
-        <EntityTypeShape EntityType="Model.UserAssessmentCheckoffItem" Width="1.5" PointX="12" PointY="9.75" />
-        <EntityTypeShape EntityType="Model.UserAssessmentQuestion" Width="1.5" PointX="9.75" PointY="11.5" />
-        <EntityTypeShape EntityType="Model.UserDetail" Width="1.5" PointX="3" PointY="17.5" />
+        <EntityTypeShape EntityType="Model.UserAssessmentCategory" Width="1.5" PointX="7.5" PointY="8.5" />
+        <EntityTypeShape EntityType="Model.UserAssessmentCheckoffItem" Width="1.5" PointX="15" PointY="10.375" />
+        <EntityTypeShape EntityType="Model.UserAssessmentQuestion" Width="1.5" PointX="9.75" PointY="10.375" />
+        <EntityTypeShape EntityType="Model.UserAssessment" Width="1.5" PointX="5.25" PointY="6.625" />
+        <EntityTypeShape EntityType="Model.UserDetail" Width="1.5" PointX="3" PointY="1.625" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Model.fk_UserDetailsAspNetUsers" />
@@ -39,9 +39,9 @@
         <AssociationConnector Association="Model.fk_AssessmentQuestionTranslationHeading" />
         <AssociationConnector Association="Model.fk_UserAssessmentQuestionAssessmentQuestion" />
         <AssociationConnector Association="Model.fk_UserAssessmentCategoryUserAssessmentID" />
-        <AssociationConnector Association="Model.fk_UserAssessmentUserDetail" />
         <AssociationConnector Association="Model.fk_UserAssessmentQuestionUserAssessmentCategory" />
         <AssociationConnector Association="Model.fk_UserAssessmentCheckoffItemUserAssessmentQuestion" />
+        <AssociationConnector Association="Model.fk_UserAssessmentUserDetail" />
         <AssociationConnector Association="Model.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>

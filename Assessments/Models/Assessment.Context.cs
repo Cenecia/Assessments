@@ -25,7 +25,6 @@ namespace Assessments.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
@@ -35,11 +34,12 @@ namespace Assessments.Models
         public virtual DbSet<AssessmentCollection> AssessmentCollections { get; set; }
         public virtual DbSet<AssessmentLevel> AssessmentLevels { get; set; }
         public virtual DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<Translation> Translations { get; set; }
-        public virtual DbSet<UserAssessment> UserAssessments { get; set; }
         public virtual DbSet<UserAssessmentCategory> UserAssessmentCategories { get; set; }
         public virtual DbSet<UserAssessmentCheckoffItem> UserAssessmentCheckoffItems { get; set; }
         public virtual DbSet<UserAssessmentQuestion> UserAssessmentQuestions { get; set; }
+        public virtual DbSet<UserAssessment> UserAssessments { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
     }
 }

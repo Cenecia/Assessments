@@ -12,8 +12,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Assessments.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "ActiveUser")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "ActiveUser")]
     public class ManageUsersController : BaseController
     {
         private UsersServices usersServices = new UsersServices();
