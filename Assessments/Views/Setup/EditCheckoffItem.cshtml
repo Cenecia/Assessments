@@ -1,0 +1,24 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupAsessmentCheckoffListItem
+
+@{
+    ViewBag.Title = "Edit Checkoff Item";
+}
+<a href="@Url.Action("EditCategory", new { id = Model.AssessmentCategoryID, qid = Model.QuestionID })" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-circle-arrow-left"></span>
+</a>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(o => o.QuestionID)
+        @Html.HiddenFor(o => o.AssessmentCategoryID)
+        @Html.LabelFor(o => o.Wording, "Wording")
+    <div class="form-group">
+        @Html.TextAreaFor(o => o.Wording, new { @class="form-control" })
+    </div>
+
+    </fieldset>
+    <div class="row">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+}
+

@@ -390,6 +390,34 @@ namespace Assessments.Services
 
             db.SaveChanges();
         }
+
+        public SetupAsessmentCheckoffListItem GetCheckoffItem(int id)
+        {
+            var checkoffItem = db.AssessmentCheckoffItems.Single(o => o.ID == id);
+
+            return new SetupAsessmentCheckoffListItem
+            {
+                ID = checkoffItem.ID,
+                Wording = checkoffItem.Translation.EN,
+                LevelID = checkoffItem.AssessmentLevelID,
+                Order = checkoffItem.CheckOffItemOrder,
+                QuestionID = checkoffItem.AssessmentQuestionID,
+                AssessmentCategoryID = checkoffItem.AssessmentQuestion.AssessmentCategoryID
+            };
+        }
+
+        public void UpdateCheckoffItem(int id, string Wording)
+        {
+            var checkoffItem = db.AssessmentCheckoffItems.Single(o => o.ID == id);
+            checkoffItem.Translation.EN = Wording;
+            db.SaveChanges();
+        }
+
+        public void DeleteCheckoffItem(int id)
+        {
+            var checkoffItem = db.AssessmentCheckoffItems.Single(o => o.ID == id);
+            db.AssessmentCheckoffItems.Remove(checkoffItem);
+        }
 #endregion
 
         /// <summary>

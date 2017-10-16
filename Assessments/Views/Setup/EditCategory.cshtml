@@ -42,10 +42,10 @@
             <div class="panel-heading">
                 
                 <div class="row clearfix">
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         @if (!Model.Live)
                         {
-                            @Html.LabelFor(o => o.Question.QuestonCode)
+                            @Html.LabelFor(o => o.Question.QuestonCode, "Question Code")
                             @Html.TextBoxFor(o => o.Question.QuestonCode, new { @class = "form-control" })
                         }
                         else
@@ -54,7 +54,7 @@
                         }
 
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-9">
                         @if (!Model.Live)
                         {
                             @Html.HiddenFor(o => o.Question.ID)
@@ -98,13 +98,13 @@
                 <div class="row">
                     @for (int i = 0; i < Model.Levels.Count; i++)
                     {
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12">
                         <div class="panel @Model.GetLevelClass(Model.Levels[i].Order)">
                             <div class="panel-heading">
                                 @Model.Levels[i].Name
                             </div>
                             <div class="panel-body">
-                                <div class="row">
+                                <div class="row form-group">
                                 @foreach (var checkoffitem in Model.Levels[i].CheckoffItems)
                                 {
                                     @Html.Partial("_CheckoffItem", checkoffitem)
@@ -119,7 +119,7 @@
                                         @Html.TextAreaFor(o => o.Levels[i].CheckoffItem.Wording, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
+                                <div class="form-group row @(Model.Question.ID == 0 ? "hidden hideForNew" : "")">
                                     <div class="col-xs-12">
                                         <button type="button" class="btn btn-success addCheckoffItem" data-id="0" data-levelid="@Model.Levels[i].ID" data-wordingid="@Html.IdFor(o => o.Levels[i].CheckoffItem.Wording)">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

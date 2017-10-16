@@ -141,5 +141,7 @@ namespace Assessments.ViewModels.SetupViewModels
         public int QuestionID { get; set; }
         public int LevelID { get; set; }
         public string Wording { get; set; }
+        public int Order { get; set; }
+        public int AssessmentCategoryID { get; set; }
     }
 }

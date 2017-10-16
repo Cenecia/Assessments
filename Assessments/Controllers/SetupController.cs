@@ -42,7 +42,7 @@ namespace Assessments.Controllers
             var ViewModel = new SetupCreateCategoriesViewModel
             {
                 AssessmentName = assessmentServices.GetAssessmentName(id)
-                
+
             };
 
             //add 12 Categories:
@@ -87,7 +87,7 @@ namespace Assessments.Controllers
         [HttpPost]
         public ActionResult SaveQuestion(int id, int categoryID, SetupQuestionListItem question)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 id = assessmentServices.AddQuestion(categoryID, question.Heading, question.Body, question.QuestonCode);
             }
@@ -105,12 +105,26 @@ namespace Assessments.Controllers
             return PartialView("_QuestionList", ViewModel);
         }
 
+        [HttpGet]
+        public ActionResult EditCheckoffItem(int id)
+        {
+            var ViewModel = assessmentServices.GetCheckoffItem(id);
+            return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditCheckoffItem(SetupAsessmentCheckoffListItem ViewModel)
+        {
+            assessmentServices.UpdateCheckoffItem(ViewModel.ID, ViewModel.Wording);
+            return RedirectToAction("EditCategory", new { id = ViewModel.AssessmentCategoryID, qid = ViewModel.QuestionID });
+        }
+
         [HttpPost]
         public ActionResult SaveCheckoffItem(SetupEditCategoryViewModel ViewModel)
         {
             if(ViewModel.ID == 0)
             {
-                ViewModel.ID = assessmentServices.CreateAssessmentCheckoffItem(ViewModel.CheckoffItem.Wording, ViewModel.CheckoffItem.QuestionID, ViewModel.CheckoffItem.LevelID, 0);
+                ViewModel.CheckoffItem.ID = assessmentServices.CreateAssessmentCheckoffItem(ViewModel.CheckoffItem.Wording, ViewModel.CheckoffItem.QuestionID, ViewModel.CheckoffItem.LevelID, 0);
             }
             else
             {

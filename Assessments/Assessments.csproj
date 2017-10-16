@@ -386,6 +386,7 @@
     <Content Include="Views\Shared\_ValidationErrors.cshtml" />
     <Content Include="Views\Assessment\ViewAssessment.cshtml" />
     <Content Include="Views\Assessment\_ViewQuestionList.cshtml" />
+    <Content Include="Views\Setup\EditCheckoffItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
