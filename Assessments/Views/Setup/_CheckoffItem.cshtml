@@ -5,4 +5,5 @@
         <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
         @Model.Wording
         <a href="@Url.Action("editCheckoffItem",new { id = Model.ID })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span></a>
+        <a href="@Url.Action("deleteCheckoffItem",new { id = Model.ID })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></a>
     </div>

@@ -417,6 +417,7 @@ namespace Assessments.Services
         {
             var checkoffItem = db.AssessmentCheckoffItems.Single(o => o.ID == id);
             db.AssessmentCheckoffItems.Remove(checkoffItem);
+            db.SaveChanges();
         }
 #endregion
 

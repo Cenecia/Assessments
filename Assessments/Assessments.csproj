@@ -387,6 +387,7 @@
     <Content Include="Views\Assessment\ViewAssessment.cshtml" />
     <Content Include="Views\Assessment\_ViewQuestionList.cshtml" />
     <Content Include="Views\Setup\EditCheckoffItem.cshtml" />
+    <Content Include="Views\Setup\DeleteCheckoffItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

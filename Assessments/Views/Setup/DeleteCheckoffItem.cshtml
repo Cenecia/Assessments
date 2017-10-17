@@ -1,0 +1,26 @@
+﻿@model Assessments.ViewModels.SetupViewModels.SetupAsessmentCheckoffListItem
+
+@{
+    ViewBag.Title = "Delete Checkoff Item";
+}
+<a href="@Url.Action("EditCategory", new { id = Model.AssessmentCategoryID, qid = Model.QuestionID })" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-circle-arrow-left"></span>
+</a>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(o => o.QuestionID)
+        @Html.HiddenFor(o => o.AssessmentCategoryID)
+    <p class="lead">Are you sure you want to delete this checkoff item?</p>
+    <div class="panel">
+        <div class="panel-body">
+            @Model.Wording
+        </div>
+    </div>
+
+    </fieldset>
+    <div class="row">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+}
+

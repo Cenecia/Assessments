@@ -119,6 +119,20 @@ namespace Assessments.Controllers
             return RedirectToAction("EditCategory", new { id = ViewModel.AssessmentCategoryID, qid = ViewModel.QuestionID });
         }
 
+        [HttpGet]
+        public ActionResult DeleteCheckoffItem(int id)
+        {
+            var ViewModel = assessmentServices.GetCheckoffItem(id);
+            return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCheckoffItem(SetupAsessmentCheckoffListItem ViewModel)
+        {
+            assessmentServices.DeleteCheckoffItem(ViewModel.ID);
+            return RedirectToAction("EditCategory", new { id = ViewModel.AssessmentCategoryID, qid = ViewModel.QuestionID });
+        }
+
         [HttpPost]
         public ActionResult SaveCheckoffItem(SetupEditCategoryViewModel ViewModel)
         {
