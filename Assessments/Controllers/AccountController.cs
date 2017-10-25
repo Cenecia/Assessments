@@ -175,6 +175,44 @@ namespace Assessments.Controllers
             return View(model);
         }
 
+        public ActionResult CreateUser()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/CreateUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateUser(RegisterViewModel model)
+        {
+            //return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                //var result = UserManager.Create(user, model.Password);
+                //await UserManager.
+                if (result.Succeeded)
+                {
+                    await Task.Delay(1000);
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    usersServices.CreateUserDetails(user.Id, model.FirstName, model.LastName);
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Index", "ManageUsers");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]

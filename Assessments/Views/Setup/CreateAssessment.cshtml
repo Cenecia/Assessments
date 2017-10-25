@@ -2,39 +2,59 @@
 
 @{
     ViewBag.Title = "Create New Assessment";
+
+    var NumCategoriesDropdownList = new List<SelectListItem>();
+
+    for (int i = 1; i <= Model.MaxCategories; i++)
+    {
+        NumCategoriesDropdownList.Add(
+            new SelectListItem {
+                Value = i.ToString(),
+                Text = i.ToString()
+            }
+        );
+    }
 }
 
 @using(Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="col-xs-12">
-            <h2>Create New Assessment</h2>
-        </div>
-        <div class="col-xs-12">
-            <div class="well well-sm">
-                Enter a name for the Assessment. Next, we will setup the categories.
+    <fieldset>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Create New Assessment</h2>
+            </div>
+            <div class="col-xs-12">
+                <div class="well well-sm">
+                    Enter a name for the Assessment. Next, we will setup the categories.
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-        @Html.Partial("_ValidationErrors", ViewData.ModelState)
+        <div class="form-group row">
+            <div class="col-xs-12">
+            @Html.Partial("_ValidationErrors", ViewData.ModelState)
+            </div>
         </div>
-    </div>
-    <div class="row">
-        @Html.LabelFor(o => o.Name, new { @class = "col-xs-12 col-sm-3 col-md-2" })
-        <div class="col-xs-12 col-sm-9 col-md-10">
-            @Html.TextBoxFor(o =>  o.Name, new { @class = "form-control" } )
+        <div class="form-group row">
+            @Html.LabelFor(o => o.Name, new { @class = "col-xs-12 col-sm-3 col-md-2" })
+            <div class="col-xs-12 col-sm-9 col-md-10">
+                @Html.TextBoxFor(o =>  o.Name, new { @class = "form-control" } )
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+        <div class="form-group row">
+            @Html.LabelFor(o => o.NumCategories, new { @class = "col-xs-12 col-sm-3 col-md-2" })
+            <div class="col-xs-12 col-sm-9 col-md-10">
+                @Html.DropDownListFor(o => o.NumCategories, NumCategoriesDropdownList, new { @class="form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
 
-            <input type="submit" value="Create Assessment" class="btn btn-success pull-right" />
+                <input type="submit" value="Create Assessment" class="btn btn-success pull-right" />
+            </div>
         </div>
-    </div>
+    </fieldset>
 }
 
 @section Scripts {

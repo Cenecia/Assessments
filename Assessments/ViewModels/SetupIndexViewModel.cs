@@ -17,10 +17,22 @@ namespace Assessments.ViewModels.SetupViewModels
 
     public class SetupEditAssessmentViewModel
     {
+        public SetupEditAssessmentViewModel()
+        {
+            MaxCategories = 20;
+        }
+
+        public int MaxCategories { get; private set; }
+
         [Required]
         [MaxLength(50, ErrorMessage = "Assessment Name must be 50 characters or less")]
         [Display(Name = "Assessment Name")]
         public string Name { get; set; }
+
+        [Required]
+        [Range(1, 20, ErrorMessage = "Assessment can have between 1 and 20 categories.")]
+        [Display(Name = "Number of Categories")]
+        public int NumCategories { get; set; }
     }
 
     public class SetupIndexAssessmentListItem
@@ -36,6 +48,8 @@ namespace Assessments.ViewModels.SetupViewModels
         {
             Categories = new List<SetupCategoryListItem>();
             LockedReasons = new List<string>();
+            MaxNewCategories = new SetupEditAssessmentViewModel().MaxCategories;
+            NumNewCategories = 1;
         }
 
         [Required]
@@ -46,7 +60,10 @@ namespace Assessments.ViewModels.SetupViewModels
         public bool CanUnlock { get; set; }
         public List<string> LockedReasons { get; set; }
         public List<SetupCategoryListItem> Categories { get; set; }
+        public int MaxNewCategories { get; set; }
+        public int NumNewCategories { get; set; }
     }
+
     public class SetupCategoryListItem
     {
         public SetupCategoryListItem()

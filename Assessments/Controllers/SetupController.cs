@@ -26,18 +26,23 @@ namespace Assessments.Controllers
         public ActionResult CreateAssessment()
         {
             var ViewModel = new SetupEditAssessmentViewModel();
-            return View();
+            return View(ViewModel);
         }
 
         [HttpPost]
         public ActionResult CreateAssessment(SetupEditAssessmentViewModel ViewModel)
         {
-            int assessmentId = assessmentServices.CreateAssessment(ViewModel.Name);
-            return RedirectToAction("CreateAssessmentCategories", new { id = assessmentId });
+            if (ModelState.IsValid)
+            {
+                int assessmentId = assessmentServices.CreateAssessment(ViewModel.Name);
+                return RedirectToAction("CreateAssessmentCategories", new { id = assessmentId, numCategory = ViewModel.NumCategories });
+            }
+
+            return View(ViewModel);
         }
 
         [HttpGet]
-        public ActionResult CreateAssessmentCategories(int id)
+        public ActionResult CreateAssessmentCategories(int id, int numCategory)
         {
             var ViewModel = new SetupCreateCategoriesViewModel
             {
@@ -45,8 +50,10 @@ namespace Assessments.Controllers
 
             };
 
+            ViewModel.MaxNewCategories -= ViewModel.Categories.Count;
+
             //add 12 Categories:
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < numCategory; i++)
             {
                 ViewModel.Categories.Add(
                     new SetupCategoryListItem
@@ -55,6 +62,7 @@ namespace Assessments.Controllers
                     }
                 );
             }
+
             return View(ViewModel);
         }
 
@@ -76,6 +84,12 @@ namespace Assessments.Controllers
         {
             var ViewModel = assessmentServices.GetAssessmentWithCategories(id);
             return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditAssessment(int id, SetupCreateCategoriesViewModel ViewModel)
+        {
+            return RedirectToAction("CreateAssessmentCategories", new { id = id, numCategory = ViewModel.NumNewCategories });
         }
 
         public ActionResult EditCategory(int id, int qid = 0)

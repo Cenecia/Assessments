@@ -2,6 +2,19 @@
 
 @{
     ViewBag.Title = "Edit Assessment";
+
+    var NumCategoriesDropdownList = new List<SelectListItem>();
+
+    for (int i = 1; i <= Model.MaxNewCategories; i++)
+    {
+        NumCategoriesDropdownList.Add(
+            new SelectListItem
+            {
+                Value = i.ToString(),
+                Text = i.ToString()
+            }
+        );
+    }
 }
 
 <h2>
@@ -44,13 +57,32 @@
     </div>
 }
 
+@if (Model.MaxNewCategories > 0)
+{
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm())
+            {
+                <div class="col-xs-1">
+                    @Html.LabelFor(o => o.NumNewCategories, "Add", new { @class="control-label pull-right", style="margin-top:5px;" })
+                </div>
+                <div class="col-xs-10">
+                    @Html.DropDownListFor(o => o.NumNewCategories, NumCategoriesDropdownList, new { @class="form-control", style="max-width:75px; display: inline;" })
+                    categories.
+                    <button class="btn btn-success" type="submit">Add</button>
+                </div>
+            }
+        </div>
+    </div>
+}
+
 <div class="row">
     <div class="col-xs-12">
         <div class="btn-group btn-group-justified" role="group">
             @foreach (var item in Model.Categories)
             {
                 <a href="@Url.Action("EditCategory", new { id = item.ID })" class="btn btn-primary">@item.Name</a>
-            }
+                }
         </div>
     </div>
 </div>

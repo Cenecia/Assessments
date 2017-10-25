@@ -38,8 +38,6 @@ namespace Assessments.Services
             db.UserDetails.Add(userDetail);
 
             db.SaveChanges();
-
-            ActivateUser(userDetail.ID);
         }
 
         public void EditUserDetails(int id, string firstname, string lastname)
@@ -71,7 +69,7 @@ namespace Assessments.Services
         public void ActivateUser(int userid)
         {
             var aspnetuserid = db.UserDetails.Single(o => o.ID == userid).AspNetUser.Email;
-                setRoles(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>(aspnetuserid, "ActiveUser") });
+            setRoles(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>(aspnetuserid, "ActiveUser") });
         }
 
         public void DeactivateUser(int userid)
